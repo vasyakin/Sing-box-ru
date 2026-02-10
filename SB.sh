@@ -296,10 +296,10 @@ fi
 echo
 if [[ -f /root/ygkkkca/cert.crt && -f /root/ygkkkca/private.key && -s /root/ygkkkca/cert.crt && -s /root/ygkkkca/private.key ]]; then
 yellow "В ходе проверки было установлено, что ранее с помощью скрипта Acme-yg была подана заявка на получение сертификата домена Acme.$(cat /root/ygkkkca/ca.log) "
-green "Использовать $(cat /root/ygkkkca/ca.log) Сертификат домена？"
-yellow "1: Нет! Используйте самоподписанный сертификат. (Введите значения по умолчанию для клавиш.)"
-yellow "2：是！使用 $(cat /root/ygkkkca/ca.log) Сертификат домена"
-readp "Пожалуйста, выберите【1-2】：" menu
+green "是否使用 $(cat /root/ygkkkca/ca.log) 域名证书？"
+yellow "1：否！使用自签的证书 (回车默认)"
+yellow "2：是！使用 $(cat /root/ygkkkca/ca.log) 域名证书"
+readp "请选择【1-2】：" menu
 if [ -z "$menu" ] || [ "$menu" = "1" ] ; then
 zqzs
 else
