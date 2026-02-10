@@ -282,20 +282,20 @@ certificatep_tuic='/etc/s-box/private.key'
 }
 
 red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-green "II. Создание и настройка соответствующих сертификатов."
+green "二、生成并设置相关证书"
 echo
-blue "Автоматическая генерация самоподписанного сертификата Bing..." && sleep 2
+blue "自动生成bing自签证书中……" && sleep 2
 openssl ecparam -genkey -name prime256v1 -out /etc/s-box/private.key
 openssl req -new -x509 -days 36500 -key /etc/s-box/private.key -out /etc/s-box/cert.pem -subj "/CN=www.bing.com"
 echo
 if [[ -f /etc/s-box/cert.pem ]]; then
-blue "Самоподписанный сертификат Bing успешно сгенерирован."
+blue "生成bing自签证书成功"
 else
-red "Не удалось сгенерировать самоподписанный сертификат Bing." && exit
+red "生成bing自签证书失败" && exit
 fi
 echo
 if [[ -f /root/ygkkkca/cert.crt && -f /root/ygkkkca/private.key && -s /root/ygkkkca/cert.crt && -s /root/ygkkkca/private.key ]]; then
-yellow "В ходе проверки было установлено, что ранее с помощью скрипта Acme-yg была подана заявка на получение сертификата домена Acme.$(cat /root/ygkkkca/ca.log) "
+yellow "经检测，之前已使用Acme-yg脚本申请过Acme域名证书：$(cat /root/ygkkkca/ca.log) "
 green "是否使用 $(cat /root/ygkkkca/ca.log) 域名证书？"
 yellow "1：否！使用自签的证书 (回车默认)"
 yellow "2：是！使用 $(cat /root/ygkkkca/ca.log) 域名证书"
