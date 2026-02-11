@@ -3162,8 +3162,23 @@ else
 red "Сертификат не найден. Используйте пункт 12 для выпуска." && sleep 2 && sb
 fi
 elif [ "$menu" = "3" ]; then
-# Логика для Hysteria2 аналогична
-# ... (продолжение перевода в том же стиле)
+if [ -f /root/ygkkkca/ca.log ]; then
+c=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].tls.certificate_path')
+d=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].tls.key_path')
+if [ "$d" = '/etc/s-box/private.key' ]; then
+c_c='/root/ygkkkca/cert.crt'
+d_d='/root/ygkkkca/private.key'
+else
+c_c='/etc/s-box/cert.pem'
+d_d='/etc/s-box/private.key'
+fi
+echo $sbfiles | xargs -n1 sed -i "79s#$c#$c_c#"
+echo $sbfiles | xargs -n1 sed -i "80s#$d#$d_d#"
+restartsb
+blue "Настройка завершена. Обновите конфиги в пункте 9."
+else
+red "Сертификат не найден. Используйте пункт 12 для выпуска." && sleep 2 && sb
+fi
 fi
 }
 
