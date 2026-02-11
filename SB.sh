@@ -3100,7 +3100,6 @@ blue "Для получения конфигов Hysteria2/Tuic5, Clash-Meta/Sin
 red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 echo
 }
-
 changeym(){
 [ -f /root/ygkkkca/ca.log ] && ymzs="$yellowПереключиться на доменный сертификат: $(cat /root/ygkkkca/ca.log 2>/dev/null)$plain" || ymzs="$yellowДоменный сертификат не найден$plain"
 vl_na="Используемый домен: $(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].tls.server_name'). $yellowНужен домен, подходящий для Reality (не сертификатный)$plain"
@@ -3151,13 +3150,7 @@ echo $sbfiles | xargs -n1 sed -i "56s#$b#$b_b#"
 echo $sbfiles | xargs -n1 sed -i "57s#$c#$c_c#"
 echo $sbfiles | xargs -n1 sed -i "58s#$d#$d_d#"
 restartsb
-blue "Настройка завершена."
-echo
-tls=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.enabled')
-vm_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].listen_port')
-blue "Текущий порт Vmess-ws: $vm_port"
-[[ "$tls" = "false" ]] && blue "Совет: используйте порты 80-й серии (80, 8080, 8880 и т.д.) для Cloudflare CDN." || blue "Совет: используйте порты 443-й серии (443, 8443, 2053 и т.д.) для Cloudflare CDN."
-echo
+blue "Настройка завершена. Обновите конфиги в пункте 9."
 else
 red "Сертификат не найден. Используйте пункт 12 для выпуска." && sleep 2 && sb
 fi
@@ -3179,9 +3172,28 @@ blue "Настройка завершена. Обновите конфиги в 
 else
 red "Сертификат не найден. Используйте пункт 12 для выпуска." && sleep 2 && sb
 fi
+elif [ "$menu" = "4" ]; then
+if [ -f /root/ygkkkca/ca.log ]; then
+c=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].tls.certificate_path')
+d=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].tls.key_path')
+if [ "$d" = '/etc/s-box/private.key' ]; then
+c_c='/root/ygkkkca/cert.crt'
+d_d='/root/ygkkkca/private.key'
+else
+c_c='/etc/s-box/cert.pem'
+d_d='/etc/s-box/private.key'
+fi
+echo $sbfiles | xargs -n1 sed -i "102s#$c#$c_c#"
+echo $sbfiles | xargs -n1 sed -i "103s#$d#$d_d#"
+restartsb
+blue "Настройка завершена. Обновите конфиги в пункте 9."
+else
+red "Сертификат не найден. Используйте пункт 12 для выпуска." && sleep 2 && sb
+fi
+else
+sb
 fi
 }
-
 allports(){
 vl_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].listen_port')
 vm_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].listen_port')
