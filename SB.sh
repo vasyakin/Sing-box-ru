@@ -1,425 +1,423 @@
-#!/bin/bash
+#!/bin/sh
 export LANG=en_US.UTF-8
-red='\033[0;31m'
-green='\033[0;32m'
-yellow='\033[0;33m'
-blue='\033[0;36m'
-bblue='\033[0;34m'
-plain='\033[0m'
-red(){ echo -e "\033[31m\033[01m$1\033[0m";}
-green(){ echo -e "\033[32m\033[01m$1\033[0m";}
-yellow(){ echo -e "\033[33m\033[01m$1\033[0m";}
-blue(){ echo -e "\033[36m\033[01m$1\033[0m";}
-white(){ echo -e "\033[37m\033[01m$1\033[0m";}
-readp(){ read -p "$(yellow "$1")" $2;}
-[[ $EUID -ne 0 ]] && yellow "Пожалуйста, запустите скрипт от имени root" && exit
-#[[ -e /etc/hosts ]] && grep -qE '^ *172.65.251.78 gitlab.com' /etc/hosts || echo -e '\n172.65.251.78 gitlab.com' >> /etc/hosts
-if [[ -f /etc/redhat-release ]]; then
-release="Centos"
-elif cat /etc/issue | grep -q -E -i "alpine"; then
-release="alpine"
-elif cat /etc/issue | grep -q -E -i "debian"; then
-release="Debian"
-elif cat /etc/issue | grep -q -E -i "ubuntu"; then
-release="Ubuntu"
-elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
-release="Centos"
-elif cat /proc/version | grep -q -E -i "debian"; then
-release="Debian"
-elif cat /proc/version | grep -q -E -i "ubuntu"; then
-release="Ubuntu"
-elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
-release="Centos"
-else 
-red "Скрипт не поддерживает вашу систему. Пожалуйста, используйте Ubuntu, Debian или Centos." && exit
+[ -z "${vlpt+x}" ] || vlp=yes
+[ -z "${vmpt+x}" ] || { vmp=yes; vmag=yes; }
+[ -z "${vwpt+x}" ] || { vwp=yes; vmag=yes; }
+[ -z "${hypt+x}" ] || hyp=yes
+[ -z "${tupt+x}" ] || tup=yes
+[ -z "${xhpt+x}" ] || xhp=yes
+[ -z "${vxpt+x}" ] || vxp=yes
+[ -z "${anpt+x}" ] || anp=yes
+[ -z "${sspt+x}" ] || ssp=yes
+[ -z "${arpt+x}" ] || arp=yes
+[ -z "${sopt+x}" ] || sop=yes
+[ -z "${warp+x}" ] || wap=yes
+if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsbx/(s|x)' || pgrep -f 'agsbx/(s|x)' >/dev/null 2>&1; then
+if [ "$1" = "rep" ]; then
+[ "$vwp" = yes ] || [ "$sop" = yes ] || [ "$vxp" = yes ] || [ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || [ "$arp" = yes ] || { echo "Подсказка: при сбросе протоколов с помощью rep, пожалуйста, установите хотя бы одну переменную протокола перед скриптом, до свидания! 💣"; exit; }
 fi
-export sbfiles="/etc/s-box/sb10.json /etc/s-box/sb11.json /etc/s-box/sb.json"
-export sbnh=$(/etc/s-box/sing-box version 2>/dev/null | awk '/version/{print $NF}' | cut -d '.' -f 1,2)
-vsid=$(grep -i version_id /etc/os-release | cut -d \" -f2 | cut -d . -f1)
+else
+[ "$1" = "del" ] || [ "$vwp" = yes ] || [ "$sop" = yes ] || [ "$vxp" = yes ] || [ "$ssp" = yes ] || [ "$vlp" = yes ] || [ "$vmp" = yes ] || [ "$hyp" = yes ] || [ "$tup" = yes ] || [ "$xhp" = yes ] || [ "$anp" = yes ] || [ "$arp" = yes ] || { echo "Подсказка: скрипт argosbx не установлен, пожалуйста, установите хотя бы одну переменную протокола перед скриптом, до свидания! 💣"; exit; }
+fi
+export uuid=${uuid:-''}
+export port_vl_re=${vlpt:-''}
+export port_vm_ws=${vmpt:-''}
+export port_vw=${vwpt:-''}
+export port_hy2=${hypt:-''}
+export port_tu=${tupt:-''}
+export port_xh=${xhpt:-''}
+export port_vx=${vxpt:-''}
+export port_an=${anpt:-''}
+export port_ar=${arpt:-''}
+export port_ss=${sspt:-''}
+export port_so=${sopt:-''}
+export ym_vl_re=${reym:-''}
+export cdnym=${cdnym:-''}
+export argo=${argo:-''}
+export ARGO_DOMAIN=${agn:-''}
+export ARGO_AUTH=${agk:-''}
+export ippz=${ippz:-''}
+export warp=${warp:-''}
+export name=${name:-''}
+export oap=${oap:-''}
+v46url="https://icanhazip.com"
+agsbxurl="https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh"
+showmode(){
+echo "Онлайн-генератор SSH-команд для скрипта Argosbx: https://yonggekkk.github.io/argosbx/"
+echo "Основной скрипт: bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh) или bash <(wget -qO- https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)"
+echo "Команда отображения информации об узлах: agsbx list [или] основной скрипт list"
+echo "Команда сброса групп переменных: пользовательские группы переменных протоколов agsbx rep [или] пользовательские группы переменных протоколов основной скрипт rep"
+echo "Команда обновления скрипта: ранее установленные пользовательские группы переменных протоколов основной скрипт rep"
+echo "Команда обновления ядра Xray или Singbox: agsbx upx или ups [или] основной скрипт upx или ups"
+echo "Команда перезапуска скрипта: agsbx res [или] основной скрипт res"
+echo "Команда удаления скрипта: agsbx del [или] основной скрипт del"
+echo "Команда отображения конфигурации узлов IPv4/IPv6 для VPS с двойным стеком: ippz=4 или 6 agsbx list [или] ippz=4 или 6 основной скрипт list"
+echo "---------------------------------------------------------"
+echo
+}
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo "GitHub проект Yongge: github.com/yonggekkk"
+echo "Блог Yongge на Blogger: ygkkk.blogspot.com"
+echo "YouTube канал Yongge: www.youtube.com/@ygkkk"
+echo "Мощный скрипт Argosbx для установки в один клик без интерактива 💣"
+echo "Текущая версия: V25.11.20"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+hostname=$(uname -a | awk '{print $2}')
 op=$(cat /etc/redhat-release 2>/dev/null || cat /etc/os-release 2>/dev/null | grep -i pretty_name | cut -d \" -f2)
-#if [[ $(echo "$op" | grep -i -E "arch|alpine") ]]; then
-if [[ $(echo "$op" | grep -i -E "arch") ]]; then
-red "Скрипт не поддерживает систему $op. Пожалуйста, используйте Ubuntu, Debian или Centos." && exit
-fi
-version=$(uname -r | cut -d "-" -f1)
-[[ -z $(systemd-detect-virt 2>/dev/null) ]] && vi=$(virt-what 2>/dev/null) || vi=$(systemd-detect-virt 2>/dev/null)
+[ -z "$(systemd-detect-virt 2>/dev/null)" ] && vi=$(virt-what 2>/dev/null) || vi=$(systemd-detect-virt 2>/dev/null)
 case $(uname -m) in
-armv7l) cpu=armv7;;
-aarch64) cpu=arm64;;
-x86_64) cpu=amd64;;
-*) red "Архитектура $(uname -m) на данный момент не поддерживается" && exit;;
+arm64|aarch64) cpu=arm64;;
+amd64|x86_64) cpu=amd64;;
+*) echo "В настоящее время скрипт не поддерживает архитектуру $(uname -m)" && exit
 esac
-#bit=$(uname -m)
-#if [[ $bit = "aarch64" ]]; then
-#cpu="arm64"
-#elif [[ $bit = "x86_64" ]]; then
-#amdv=$(cat /proc/cpuinfo | grep flags | head -n 1 | cut -d: -f2)
-#[[ $amdv == *avx2* && $amdv == *f16c* ]] && cpu="amd64v3" || cpu="amd64"
-#else
-#red "На данный момент архитектура $bit не поддерживается" && exit
-#fi
-if [[ -n $(sysctl net.ipv4.tcp_congestion_control 2>/dev/null | awk -F ' ' '{print $3}') ]]; then
-bbr=`sysctl net.ipv4.tcp_congestion_control | awk -F ' ' '{print $3}'`
-elif [[ -n $(ping 10.0.0.2 -c 2 | grep ttl) ]]; then
-bbr="Openvz version bbr-plus"
-else
-bbr="Openvz/Lxc"
-fi
-hostname=$(hostname)
-
-if [ ! -f sbyg_update ]; then
-green "Первичная установка необходимых зависимостей для скрипта Sing-box-yg..."
-if [[ x"${release}" == x"alpine" ]]; then
-apk update
-apk add jq openssl iproute2 iputils coreutils expect git socat iptables grep util-linux dcron tar tzdata 
-apk add virt-what
-else
-if [[ $release = Centos && ${vsid} =~ 8 ]]; then
-cd /etc/yum.repos.d/ && mkdir backup && mv *repo backup/ 
-curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-8.repo
-sed -i -e "s|mirrors.cloud.aliyuncs.com|mirrors.aliyun.com|g " /etc/yum.repos.d/CentOS-*
-sed -i -e "s|releasever|releasever-stream|g" /etc/yum.repos.d/CentOS-*
-yum clean all && yum makecache
-cd
-fi
-if [ -x "$(command -v apt-get)" ]; then
-apt update -y
-apt install jq cron socat iptables-persistent coreutils util-linux -y
-elif [ -x "$(command -v yum)" ]; then
-yum update -y && yum install epel-release -y
-yum install jq socat coreutils util-linux -y
-elif [ -x "$(command -v dnf)" ]; then
-dnf update -y
-dnf install jq socat coreutils util-linux -y
-fi
-if [ -x "$(command -v yum)" ] || [ -x "$(command -v dnf)" ]; then
-if [ -x "$(command -v yum)" ]; then
-yum install -y cronie iptables-services
-elif [ -x "$(command -v dnf)" ]; then
-dnf install -y cronie iptables-services
-fi
-systemctl enable iptables >/dev/null 2>&1
-systemctl start iptables >/dev/null 2>&1
-fi
-if [[ -z $vi ]]; then
-apt install iputils-ping iproute2 systemctl -y
-fi
-
-packages=("curl" "openssl" "iptables" "tar" "expect" "wget" "xxd" "python3" "qrencode" "git")
-inspackages=("curl" "openssl" "iptables" "tar" "expect" "wget" "xxd" "python3" "qrencode" "git")
-for i in "${!packages[@]}"; do
-package="${packages[$i]}"
-inspackage="${inspackages[$i]}"
-if ! command -v "$package" &> /dev/null; then
-if [ -x "$(command -v apt-get)" ]; then
-apt-get install -y "$inspackage"
-elif [ -x "$(command -v yum)" ]; then
-yum install -y "$inspackage"
-elif [ -x "$(command -v dnf)" ]; then
-dnf install -y "$inspackage"
-fi
-fi
-done
-fi
-touch sbyg_update
-fi
-
-if [[ $vi = openvz ]]; then
-TUN=$(cat /dev/net/tun 2>&1)
-if [[ ! $TUN =~ 'in bad state' ]] && [[ ! $TUN =~ '处于错误状态' ]] && [[ ! $TUN =~ 'Die Dateizugriffsnummer ist in schlechter Verfassung' ]]; then 
-red "TUN не обнаружен, пытаюсь добавить поддержку TUN..." && sleep 4
-cd /dev && mkdir net && mknod net/tun c 10 200 && chmod 0666 net/tun
-TUN=$(cat /dev/net/tun 2>&1)
-if [[ ! $TUN =~ 'in bad state' ]] && [[ ! $TUN =~ '处于错误状态' ]] && [[ ! $TUN =~ 'Die Dateizugriffsnummer ist in schlechter Verfassung' ]]; then 
-green "Не удалось добавить поддержку TUN. Рекомендуется включить его в панели управления VPS." && exit
-else
-echo '#!/bin/bash' > /root/tun.sh && echo 'cd /dev && mkdir net && mknod net/tun c 10 200 && chmod 0666 net/tun' >> /root/tun.sh && chmod +x /root/tun.sh
-grep -qE "^ *@reboot root bash /root/tun.sh >/dev/null 2>&1" /etc/crontab || echo "@reboot root bash /root/tun.sh >/dev/null 2>&1" >> /etc/crontab
-green "Функция мониторинга TUN запущена"
-fi
-fi
-fi
-
+mkdir -p "$HOME/agsbx"
 v4v6(){
-v4=$(curl -s4m5 icanhazip.com -k)
-v6=$(curl -s6m5 icanhazip.com -k)
+v4=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -4 --tries=2 -qO- "$v46url" 2>/dev/null) )
+v6=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -6 --tries=2 -qO- "$v46url" 2>/dev/null) )
+v4dq=$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k https://ip.fm | sed -E 's/.*Location: ([^,]+(, [^,]+)*),.*/\1/' 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -4 --tries=2 -qO- https://ip.fm | grep '<span class="has-text-grey-light">Location:' | tail -n1 | sed -E 's/.*>Location: <\/span>([^<]+)<.*/\1/' 2>/dev/null) )
+v6dq=$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k https://ip.fm | sed -E 's/.*Location: ([^,]+(, [^,]+)*),.*/\1/' 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -6 --tries=2 -qO- https://ip.fm | grep '<span class="has-text-grey-light">Location:' | tail -n1 | sed -E 's/.*>Location: <\/span>([^<]+)<.*/\1/' 2>/dev/null) )
 }
-
-warpcheck(){
-wgcfv6=$(curl -s6m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
-wgcfv4=$(curl -s4m5 https://www.cloudflare.com/cdn-cgi/trace -k | grep warp | cut -d= -f2)
-}
-
-v6(){
-v4orv6(){
-if [ -z "$(curl -s4m5 icanhazip.com -k)" ]; then
+warpsx(){
+warpurl=$( (command -v curl >/dev/null 2>&1 && curl -sm5 -k https://warp.xijp.eu.org 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget --tries=2 -qO- https://warp.xijp.eu.org 2>/dev/null) )
+if echo "$warpurl" | grep -q html; then
+wpv6='2606:4700:110:8d8d:1845:c39f:2dd5:a03a'
+pvk='52cuYFgCJXp0LAq7+nWJIbCXXgU9eGggOc+Hlfz5u6A='
+res='[215, 69, 233]'
+else
+pvk=$(echo "$warpurl" | awk -F'：' '/Private_key/{print $2}' | xargs)
+wpv6=$(echo "$warpurl" | awk -F'：' '/IPV6/{print $2}' | xargs)
+res=$(echo "$warpurl" | awk -F'：' '/reserved/{print $2}' | xargs)
+fi
+if [ -n "$name" ]; then
+sxname=$name-
+echo "$sxname" > "$HOME/agsbx/name"
 echo
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-yellow "Обнаружен VPS только с IPv6, добавляю NAT64..."
-echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1" > /etc/resolv.conf
-ipv=prefer_ipv6
+echo "Префикс имен всех узлов: $name"
+fi
+v4v6
+if echo "$v6" | grep -q '^2a09' || echo "$v4" | grep -q '^104.28'; then
+s1outtag=direct; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo
+echo; echo "Внимание: вы уже установили warp"
 else
-ipv=prefer_ipv4
-fi
-if [ -n "$(curl -s6m5 icanhazip.com -k)" ]; then
-endip=2606:4700:d0::a29f:c001
+if [ "$wap" != yes ]; then
+s1outtag=direct; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo
 else
-endip=162.159.192.1
+case "$warp" in
+""|sx|xs) s1outtag=warp-out; s2outtag=warp-out; x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+s ) s1outtag=warp-out; s2outtag=warp-out; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+s4) s1outtag=warp-out; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"0.0.0.0/0"'; wap=warp ;;
+s6) s1outtag=warp-out; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0"'; wap=warp ;;
+x ) s1outtag=direct; s2outtag=direct; x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+x4) s1outtag=direct; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+x6) s1outtag=direct; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"::/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+s4x4|x4s4) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"0.0.0.0/0"'; sip='"0.0.0.0/0"'; wap=warp ;;
+s4x6|x6s4) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"::/0"'; sip='"0.0.0.0/0"'; wap=warp ;;
+s6x4|x4s6) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"0.0.0.0/0"'; sip='"::/0"'; wap=warp ;;
+s6x6|x6s6) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=direct; xip='"::/0"'; sip='"::/0"'; wap=warp ;;
+sx4|x4s) s1outtag=warp-out; s2outtag=warp-out; x1outtag=warp-out; x2outtag=direct; xip='"0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+sx6|x6s) s1outtag=warp-out; s2outtag=warp-out; x1outtag=warp-out; x2outtag=direct; xip='"::/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warp ;;
+xs4|s4x) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"0.0.0.0/0"'; wap=warp ;;
+xs6|s6x) s1outtag=warp-out; s2outtag=direct; x1outtag=warp-out; x2outtag=warp-out; xip='"::/0", "0.0.0.0/0"'; sip='"::/0"'; wap=warp ;;
+* ) s1outtag=direct; s2outtag=direct; x1outtag=direct; x2outtag=direct; xip='"::/0", "0.0.0.0/0"'; sip='"::/0", "0.0.0.0/0"'; wap=warpargo ;;
+esac
+fi
+fi
+case "$warp" in *x4*) wxryx='ForceIPv4' ;; *x6*) wxryx='ForceIPv6' ;; *) wxryx='ForceIPv6v4' ;; esac
+if command -v curl >/dev/null 2>&1; then
+curl -s4m5 -k "$v46url" >/dev/null 2>&1 && v4_ok=true
+elif command -v wget >/dev/null 2>&1; then
+timeout 3 wget -4 --tries=2 -qO- "$v46url" >/dev/null 2>&1 && v4_ok=true
+fi
+if command -v curl >/dev/null 2>&1; then
+curl -s6m5 -k "$v46url" >/dev/null 2>&1 && v6_ok=true
+elif command -v wget >/dev/null 2>&1; then
+timeout 3 wget -6 --tries=2 -qO- "$v46url" >/dev/null 2>&1 && v6_ok=true
+fi
+if [ "$v4_ok" = true ] && [ "$v6_ok" = true ]; then
+case "$warp" in *s4*) sbyx='prefer_ipv4' ;; *) sbyx='prefer_ipv6' ;; esac
+case "$warp" in *x4*) xryx='ForceIPv4v6' ;; *x*) xryx='ForceIPv6v4' ;; *) xryx='ForceIPv4v6' ;; esac
+elif [ "$v4_ok" = true ] && [ "$v6_ok" != true ]; then
+case "$warp" in *s4*) sbyx='ipv4_only' ;; *) sbyx='prefer_ipv6' ;; esac
+case "$warp" in *x4*) xryx='ForceIPv4' ;; *x*) xryx='ForceIPv6v4' ;; *) xryx='ForceIPv4v6' ;; esac
+elif [ "$v4_ok" != true ] && [ "$v6_ok" = true ]; then
+case "$warp" in *s6*) sbyx='ipv6_only' ;; *) sbyx='prefer_ipv4' ;; esac
+case "$warp" in *x6*) xryx='ForceIPv6' ;; *x*) xryx='ForceIPv4v6' ;; *) xryx='ForceIPv6v4' ;; esac
 fi
 }
-warpcheck
-if [[ ! $wgcfv4 =~ on|plus && ! $wgcfv6 =~ on|plus ]]; then
-v4orv6
+upxray(){
+url="https://github.com/yonggekkk/argosbx/releases/download/argosbx/xray-$cpu"; out="$HOME/agsbx/xray"; (command -v curl >/dev/null 2>&1 && curl -Lo "$out" -# --retry 2 "$url") || (command -v wget>/dev/null 2>&1 && timeout 3 wget -O "$out" --tries=2 "$url")
+chmod +x "$HOME/agsbx/xray"
+sbcore=$("$HOME/agsbx/xray" version 2>/dev/null | awk '/^Xray/{print $2}')
+echo "Установлено стабильное ядро Xray: $sbcore"
+}
+upsingbox(){
+url="https://github.com/yonggekkk/argosbx/releases/download/argosbx/sing-box-$cpu"; out="$HOME/agsbx/sing-box"; (command -v curl>/dev/null 2>&1 && curl -Lo "$out" -# --retry 2 "$url") || (command -v wget>/dev/null 2>&1 && timeout 3 wget -O "$out" --tries=2 "$url")
+chmod +x "$HOME/agsbx/sing-box"
+sbcore=$("$HOME/agsbx/sing-box" version 2>/dev/null | awk '/version/{print $NF}')
+echo "Установлено стабильное ядро Sing-box: $sbcore"
+}
+insuuid(){
+if [ -z "$uuid" ] && [ ! -e "$HOME/agsbx/uuid" ]; then
+if [ -e "$HOME/agsbx/sing-box" ]; then
+uuid=$("$HOME/agsbx/sing-box" generate uuid)
 else
-systemctl stop wg-quick@wgcf >/dev/null 2>&1
-kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
-v4orv6
-systemctl start wg-quick@wgcf >/dev/null 2>&1
-systemctl restart warp-go >/dev/null 2>&1
-systemctl enable warp-go >/dev/null 2>&1
-systemctl start warp-go >/dev/null 2>&1
+uuid=$("$HOME/agsbx/xray" uuid)
 fi
-}
-
-argopid(){
-ym=$(cat /etc/s-box/sbargoympid.log 2>/dev/null)
-ls=$(cat /etc/s-box/sbargopid.log 2>/dev/null)
-}
-
-close(){
-systemctl stop firewalld.service >/dev/null 2>&1
-systemctl disable firewalld.service >/dev/null 2>&1
-setenforce 0 >/dev/null 2>&1
-ufw disable >/dev/null 2>&1
-iptables -P INPUT ACCEPT >/dev/null 2>&1
-iptables -P FORWARD ACCEPT >/dev/null 2>&1
-iptables -P OUTPUT ACCEPT >/dev/null 2>&1
-iptables -t mangle -F >/dev/null 2>&1
-iptables -F >/dev/null 2>&1
-iptables -X >/dev/null 2>&1
-netfilter-persistent save >/dev/null 2>&1
-if [[ -n $(apachectl -v 2>/dev/null) ]]; then
-systemctl stop httpd.service >/dev/null 2>&1
-systemctl disable httpd.service >/dev/null 2>&1
-service apache2 stop >/dev/null 2>&1
-systemctl disable apache2 >/dev/null 2>&1
+echo "$uuid" > "$HOME/agsbx/uuid"
+elif [ -n "$uuid" ]; then
+echo "$uuid" > "$HOME/agsbx/uuid"
 fi
-sleep 1
-green "Порты открыты, брандмауэр успешно отключен"
+uuid=$(cat "$HOME/agsbx/uuid")
+echo "Пароль UUID: $uuid"
 }
-
-openyn(){
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-readp "Открыть порты и отключить брандмауэр?\n1. Да, выполнить (по умолчанию)\n2. Нет, пропустить (настрою самостоятельно)\nПожалуйста, выберите [1-2]: " action
-if [[ -z $action ]] || [[ "$action" = "1" ]]; then
-close
-elif [[ "$action" = "2" ]]; then
+installxray(){
 echo
-else
-red "Ошибка ввода, попробуйте еще раз" && openyn
+echo "=========Включение ядра Xray========="
+mkdir -p "$HOME/agsbx/xrk"
+if [ ! -e "$HOME/agsbx/xray" ]; then
+upxray
 fi
-}
-
-inssb(){
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-green "Какую версию ядра использовать? Текущая ситуация: серия 1.10 (stable) поддерживает разделение geosite, версии после 1.10 не поддерживают geosite."
-yellow "1. Использовать последнюю стабильную версию после 1.10 (по умолчанию)"
-yellow "2. Использовать стабильную версию 1.10.7"
-readp "Пожалуйста, выберите [1-2]: " menu
-if [ -z "$menu" ] || [ "$menu" = "1" ] ; then
-#sbcore=$(curl -Ls https://data.jsdelivr.net/v1/package/gh/SagerNet/sing-box | grep -Eo '"[0-9.]+",' | sed -n 1p | tr -d '",')
-sbcore="1.12.19"
-else
-sbcore=$(curl -Ls https://data.jsdelivr.net/v1/package/gh/SagerNet/sing-box | grep -Eo '"1\.10[0-9\.]*",'  | sed -n 1p | tr -d '",')
-fi
-sbname="sing-box-$sbcore-linux-$cpu"
-curl -L -o /etc/s-box/sing-box.tar.gz  -# --retry 2 https://github.com/SagerNet/sing-box/releases/download/v$sbcore/$sbname.tar.gz
-if [[ -f '/etc/s-box/sing-box.tar.gz' ]]; then
-tar xzf /etc/s-box/sing-box.tar.gz -C /etc/s-box
-mv /etc/s-box/$sbname/sing-box /etc/s-box
-rm -rf /etc/s-box/{sing-box.tar.gz,$sbname}
-if [[ -f '/etc/s-box/sing-box' ]]; then
-chown root:root /etc/s-box/sing-box
-chmod +x /etc/s-box/sing-box
-blue "Ядро Sing-box версии $(/etc/s-box/sing-box version | awk '/version/{print $NF}') успешно установлено"
-else
-red "Файл ядра Sing-box поврежден, установка не удалась. Запустите установку повторно." && exit
-fi
-else
-red "Не удалось скачать ядро Sing-box. Запустите установку еще раз и проверьте доступ к Github с вашего VPS." && exit
-fi
-}
-
-inscertificate(){
-ymzs(){
+cat > "$HOME/agsbx/xr.json" <<EOF
+{
+  "log": {
+  "loglevel": "none"
+  },
+  "inbounds": [
+EOF
+insuuid
+if [ -n "$xhp" ] || [ -n "$vlp" ]; then
+if [ -z "$ym_vl_re" ]; then
 ym_vl_re=apple.com
-echo
-blue "SNI домен для Vless-reality по умолчанию: apple.com"
-blue "Vmess-ws будет использовать TLS. Hysteria-2 и Tuic-v5 будут использовать сертификат $(cat /root/ygkkkca/ca.log 2>/dev/null) с проверкой SNI."
-tlsyn=true
-ym_vm_ws=$(cat /root/ygkkkca/ca.log 2>/dev/null)
-certificatec_vmess_ws='/root/ygkkkca/cert.crt'
-certificatep_vmess_ws='/root/ygkkkca/private.key'
-certificatec_hy2='/root/ygkkkca/cert.crt'
-certificatep_hy2='/root/ygkkkca/private.key'
-certificatec_tuic='/root/ygkkkca/cert.crt'
-certificatep_tuic='/root/ygkkkca/private.key'
+fi
+echo "$ym_vl_re" > "$HOME/agsbx/ym_vl_re"
+echo "Домен Reality: $ym_vl_re"
+if [ ! -e "$HOME/agsbx/xrk/private_key" ]; then
+key_pair=$("$HOME/agsbx/xray" x25519)
+private_key=$(echo "$key_pair" | grep "PrivateKey" | awk '{print $2}')
+public_key=$(echo "$key_pair" | grep "Password" | awk '{print $2}')
+short_id=$(date +%s%N | sha256sum | cut -c 1-8)
+echo "$private_key" > "$HOME/agsbx/xrk/private_key"
+echo "$public_key" > "$HOME/agsbx/xrk/public_key"
+echo "$short_id" > "$HOME/agsbx/xrk/short_id"
+fi
+private_key_x=$(cat "$HOME/agsbx/xrk/private_key")
+public_key_x=$(cat "$HOME/agsbx/xrk/public_key")
+short_id_x=$(cat "$HOME/agsbx/xrk/short_id")
+fi
+if [ -n "$xhp" ] || [ -n "$vxp" ] || [ -n "$vwp" ]; then
+if [ ! -e "$HOME/agsbx/xrk/dekey" ]; then
+vlkey=$("$HOME/agsbx/xray" vlessenc)
+dekey=$(echo "$vlkey" | grep '"decryption":' | sed -n '2p' | cut -d' ' -f2- | tr -d '"')
+enkey=$(echo "$vlkey" | grep '"encryption":' | sed -n '2p' | cut -d' ' -f2- | tr -d '"')
+echo "$dekey" > "$HOME/agsbx/xrk/dekey"
+echo "$enkey" > "$HOME/agsbx/xrk/enkey"
+fi
+dekey=$(cat "$HOME/agsbx/xrk/dekey")
+enkey=$(cat "$HOME/agsbx/xrk/enkey")
+fi
+
+if [ -n "$xhp" ]; then
+xhp=xhpt
+if [ -z "$port_xh" ] && [ ! -e "$HOME/agsbx/port_xh" ]; then
+port_xh=$(shuf -i 10000-65535 -n 1)
+echo "$port_xh" > "$HOME/agsbx/port_xh"
+elif [ -n "$port_xh" ]; then
+echo "$port_xh" > "$HOME/agsbx/port_xh"
+fi
+port_xh=$(cat "$HOME/agsbx/port_xh")
+echo "Порт Vless-xhttp-reality-enc: $port_xh"
+cat >> "$HOME/agsbx/xr.json" <<EOF
+    {
+      "tag":"xhttp-reality",
+      "listen": "::",
+      "port": ${port_xh},
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "${uuid}",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "${dekey}"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "security": "reality",
+        "realitySettings": {
+          "fingerprint": "chrome",
+          "target": "${ym_vl_re}:443",
+          "serverNames": [
+            "${ym_vl_re}"
+          ],
+          "privateKey": "$private_key_x",
+          "shortIds": ["$short_id_x"]
+        },
+        "xhttpSettings": {
+          "host": "",
+          "path": "${uuid}-xh",
+          "mode": "auto"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "metadataOnly": false
+      }
+    },
+EOF
+else
+xhp=xhptargo
+fi
+if [ -n "$vxp" ]; then
+vxp=vxpt
+if [ -z "$port_vx" ] && [ ! -e "$HOME/agsbx/port_vx" ]; then
+port_vx=$(shuf -i 10000-65535 -n 1)
+echo "$port_vx" > "$HOME/agsbx/port_vx"
+elif [ -n "$port_vx" ]; then
+echo "$port_vx" > "$HOME/agsbx/port_vx"
+fi
+port_vx=$(cat "$HOME/agsbx/port_vx")
+echo "Порт Vless-xhttp-enc: $port_vx"
+if [ -n "$cdnym" ]; then
+echo "$cdnym" > "$HOME/agsbx/cdnym"
+echo "Host-домен CDN для 80-х портов или Origin CDN (убедитесь, что IP разрешен в домен CF): $cdnym"
+fi
+cat >> "$HOME/agsbx/xr.json" <<EOF
+    {
+      "tag":"vless-xhttp",
+      "listen": "::",
+      "port": ${port_vx},
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "${uuid}",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "${dekey}"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "host": "",
+          "path": "${uuid}-vx",
+          "mode": "auto"
+        }
+      },
+        "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "metadataOnly": false
+      }
+    },
+EOF
+else
+vxp=vxptargo
+fi
+if [ -n "$vwp" ]; then
+vwp=vwpt
+if [ -z "$port_vw" ] && [ ! -e "$HOME/agsbx/port_vw" ]; then
+port_vw=$(shuf -i 10000-65535 -n 1)
+echo "$port_vw" > "$HOME/agsbx/port_vw"
+elif [ -n "$port_vw" ]; then
+echo "$port_vw" > "$HOME/agsbx/port_vw"
+fi
+port_vw=$(cat "$HOME/agsbx/port_vw")
+echo "Порт Vless-ws-enc: $port_vw"
+if [ -n "$cdnym" ]; then
+echo "$cdnym" > "$HOME/agsbx/cdnym"
+echo "Host-домен CDN для 80-х портов или Origin CDN (убедитесь, что IP разрешен в домен CF): $cdnym"
+fi
+cat >> "$HOME/agsbx/xr.json" <<EOF
+    {
+      "tag":"vless-ws",
+      "listen": "::",
+      "port": ${port_vw},
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "${uuid}",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "${dekey}"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "${uuid}-vw"
+        }
+      },
+        "sniffing": {
+        "enabled": true,
+        "destOverride": ["http", "tls", "quic"],
+        "metadataOnly": false
+      }
+    },
+EOF
+else
+vwp=vwptargo
+fi
+if [ -n "$vlp" ]; then
+vlp=vlpt
+if [ -z "$port_vl_re" ] && [ ! -e "$HOME/agsbx/port_vl_re" ]; then
+port_vl_re=$(shuf -i 10000-65535 -n 1)
+echo "$port_vl_re" > "$HOME/agsbx/port_vl_re"
+elif [ -n "$port_vl_re" ]; then
+echo "$port_vl_re" > "$HOME/agsbx/port_vl_re"
+fi
+port_vl_re=$(cat "$HOME/agsbx/port_vl_re")
+echo "Порт Vless-tcp-reality-v: $port_vl_re"
+cat >> "$HOME/agsbx/xr.json" <<EOF
+        {
+            "tag":"reality-vision",
+            "listen": "::",
+            "port": $port_vl_re,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${uuid}",
+                        "flow": "xtls-rprx-vision"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "reality",
+                "realitySettings": {
+                    "fingerprint": "chrome",
+                    "dest": "${ym_vl_re}:443",
+                    "serverNames": [
+                      "${ym_vl_re}"
+                    ],
+                    "privateKey": "$private_key_x",
+                    "shortIds": ["$short_id_x"]
+                }
+            },
+          "sniffing": {
+          "enabled": true,
+          "destOverride": ["http", "tls", "quic"],
+          "metadataOnly": false
+      }
+    },  
+EOF
+else
+vlp=vlptargo
+fi
 }
 
-zqzs(){
-ym_vl_re=apple.com
+installsb(){
 echo
-blue "SNI домен для Vless-reality по умолчанию: apple.com"
-blue "Vmess-ws будет работать без TLS. Hysteria-2 и Tuic-v5 будут использовать самоподписанный сертификат bing без проверки SNI."
-tlsyn=false
-ym_vm_ws=www.bing.com
-certificatec_vmess_ws='/etc/s-box/cert.pem'
-certificatep_vmess_ws='/etc/s-box/private.key'
-certificatec_hy2='/etc/s-box/cert.pem'
-certificatep_hy2='/etc/s-box/private.key'
-certificatec_tuic='/etc/s-box/cert.pem'
-certificatep_tuic='/etc/s-box/private.key'
-}
-
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-green "Шаг 2. Генерация и настройка сертификатов"
-echo
-blue "Автоматическая генерация самоподписанного сертификата bing..." && sleep 2
-openssl ecparam -genkey -name prime256v1 -out /etc/s-box/private.key
-openssl req -new -x509 -days 36500 -key /etc/s-box/private.key -out /etc/s-box/cert.pem -subj "/CN=www.bing.com"
-echo
-if [[ -f /etc/s-box/cert.pem ]]; then
-blue "Самоподписанный сертификат bing успешно создан"
-else
-red "Ошибка при создании самоподписанного сертификата" && exit
+echo "=========Включение ядра Sing-box========="
+if [ ! -e "$HOME/agsbx/sing-box" ]; then
+upsingbox
 fi
-echo
-if [[ -f /root/ygkkkca/cert.crt && -f /root/ygkkkca/private.key && -s /root/ygkkkca/cert.crt && -s /root/ygkkkca/private.key ]]; then
-yellow "Обнаружен ранее созданный доменный сертификат Acme (через Acme-yg): $(cat /root/ygkkkca/ca.log) "
-green "Использовать сертификат для домена $(cat /root/ygkkkca/ca.log)?"
-yellow "1. Нет! Использовать самоподписанный сертификат (по умолчанию)"
-yellow "2. Да! Использовать сертификат домена $(cat /root/ygkkkca/ca.log)"
-readp "Пожалуйста, выберите [1-2]: " menu
-if [ -z "$menu" ] || [ "$menu" = "1" ] ; then
-zqzs
-else
-ymzs
-fi
-else
-green "Если у вас есть привязанный домен, хотите ли вы выпустить сертификат Acme?"
-yellow "1. Нет! Использовать самоподписанный сертификат (по умолчанию)"
-yellow "2. Да! Использовать скрипт Acme-yg для выпуска сертификата (поддерживает порт 80 или DNS API)"
-readp "Пожалуйста, выберите [1-2]: " menu
-if [ -z "$menu" ] || [ "$menu" = "1" ] ; then
-zqzs
-else
-bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/acme-yg/main/acme.sh)
-if [[ ! -f /root/ygkkkca/cert.crt && ! -f /root/ygkkkca/private.key && ! -s /root/ygkkkca/cert.crt && ! -s /root/ygkkkca/private.key ]]; then
-red "Ошибка выпуска Acme сертификата, возвращаюсь к самоподписанному сертификату" 
-zqzs
-else
-ymzs
-fi
-fi
-fi
-}
-
-chooseport(){
-if [[ -z $port ]]; then
-port=$(shuf -i 10000-65535 -n 1)
-until [[ -z $(ss -tunlp | grep -w udp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") && -z $(ss -tunlp | grep -w tcp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") ]] 
-do
-[[ -n $(ss -tunlp | grep -w udp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") || -n $(ss -tunlp | grep -w tcp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") ]] && yellow "\nПорт занят, введите другой порт" && readp "Ваш порт:" port
-done
-else
-until [[ -z $(ss -tunlp | grep -w udp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") && -z $(ss -tunlp | grep -w tcp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") ]]
-do
-[[ -n $(ss -tunlp | grep -w udp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") || -n $(ss -tunlp | grep -w tcp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") ]] && yellow "\nПорт занят, введите другой порт" && readp "Ваш порт:" port
-done
-fi
-blue "Подтвержденный порт: $port" && sleep 2
-}
-
-vlport(){
-readp "\nУстановите порт для Vless-reality [1-65535] (Enter для случайного порта 10000-65535): " port
-chooseport
-port_vl_re=$port
-}
-vmport(){
-readp "\nУстановите порт для Vmess-ws [1-65535] (Enter для случайного порта 10000-65535): " port
-chooseport
-port_vm_ws=$port
-}
-hy2port(){
-readp "\nУстановите основной порт для Hysteria2 [1-65535] (Enter для случайного порта 10000-65535): " port
-chooseport
-port_hy2=$port
-}
-tu5port(){
-readp "\nУстановите основной порт для Tuic5 [1-65535] (Enter для случайного порта 10000-65535): " port
-chooseport
-port_tu=$port
-}
-
-insport(){
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-green "Шаг 3. Настройка портов для протоколов"
-yellow "1. Автоматически создать случайные порты (10000-65535), по умолчанию"
-yellow "2. Настроить порты вручную"
-readp "Пожалуйста, выберите [1-2]: " port
-if [ -z "$port" ] || [ "$port" = "1" ] ; then
-ports=()
-for i in {1..4}; do
-while true; do
-port=$(shuf -i 10000-65535 -n 1)
-if ! [[ " ${ports[@]} " =~ " $port " ]] && \
-[[ -z $(ss -tunlp | grep -w tcp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") ]] && \
-[[ -z $(ss -tunlp | grep -w udp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port") ]]; then
-ports+=($port)
-break
-fi
-done
-done
-port_vm_ws=${ports[0]}
-port_vl_re=${ports[1]}
-port_hy2=${ports[2]}
-port_tu=${ports[3]}
-if [[ $tlsyn == "true" ]]; then
-numbers=("2053" "2083" "2087" "2096" "8443")
-else
-numbers=("8080" "8880" "2052" "2082" "2086" "2095")
-fi
-port_vm_ws=${numbers[$RANDOM % ${#numbers[@]}]}
-until [[ -z $(ss -tunlp | grep -w tcp | awk '{print $5}' | sed 's/.*://g' | grep -w "$port_vm_ws") ]]
-do
-if [[ $tlsyn == "true" ]]; then
-numbers=("2053" "2083" "2087" "2096" "8443")
-else
-numbers=("8080" "8880" "2052" "2082" "2086" "2095")
-fi
-port_vm_ws=${numbers[$RANDOM % ${#numbers[@]}]}
-done
-echo
-blue "Для Vmess-ws автоматически выбран стандартный CDN-порт: $port_vm_ws"
-else
-vlport && vmport && hy2port && tu5port
-fi
-echo
-blue "Конфигурация портов завершена:"
-blue "Vless-reality порт: $port_vl_re"
-blue "Vmess-ws порт:      $port_vm_ws"
-blue "Hysteria-2 порт:    $port_hy2"
-blue "Tuic-v5 порт:       $port_tu"
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-green "Шаг 4. Генерация единого UUID (пароля) для всех протоколов"
-uuid=$(/etc/s-box/sing-box generate uuid)
-blue "Ваш UUID (пароль): ${uuid}"
-blue "Путь для Vmess (path): ${uuid}-vm"
-}
-
-inssbjsonser(){
-# Генерируем конфигурационные файлы JSON. Код внутри EOF остается без изменений, так как это системные ключи.
-cat > /etc/s-box/sb10.json <<EOF
+cat > "$HOME/agsbx/sb.json" <<EOF
 {
 "log": {
     "disabled": false,
@@ -427,63 +425,27 @@ cat > /etc/s-box/sb10.json <<EOF
     "timestamp": true
   },
   "inbounds": [
-    {
-      "type": "vless",
-      "sniff": true,
-      "sniff_override_destination": true,
-      "tag": "vless-sb",
-      "listen": "::",
-      "listen_port": ${port_vl_re},
-      "users": [
-        {
-          "uuid": "${uuid}",
-          "flow": "xtls-rprx-vision"
-        }
-      ],
-      "tls": {
-        "enabled": true,
-        "server_name": "${ym_vl_re}",
-          "reality": {
-          "enabled": true,
-          "handshake": {
-            "server": "${ym_vl_re}",
-            "server_port": 443
-          },
-          "private_key": "$private_key",
-          "short_id": ["$short_id"]
-        }
-      }
-    },
-{
-        "type": "vmess",
-        "sniff": true,
-        "sniff_override_destination": true,
-        "tag": "vmess-sb",
-        "listen": "::",
-        "listen_port": ${port_vm_ws},
-        "users": [
-            {
-                "uuid": "${uuid}",
-                "alterId": 0
-            }
-        ],
-        "transport": {
-            "type": "ws",
-            "path": "${uuid}-vm",
-            "max_early_data":2048,
-            "early_data_header_name": "Sec-WebSocket-Protocol"    
-        },
-        "tls":{
-                "enabled": ${tlsyn},
-                "server_name": "${ym_vm_ws}",
-                "certificate_path": "$certificatec_vmess_ws",
-                "key_path": "$certificatep_vmess_ws"
-            }
-    }, 
+EOF
+insuuid
+command -v openssl >/dev/null 2>&1 && openssl ecparam -genkey -name prime256v1 -out "$HOME/agsbx/private.key" >/dev/null 2>&1
+command -v openssl >/dev/null 2>&1 && openssl req -new -x509 -days 36500 -key "$HOME/agsbx/private.key" -out "$HOME/agsbx/cert.pem" -subj "/CN=www.bing.com" >/dev/null 2>&1
+if [ ! -f "$HOME/agsbx/private.key" ]; then
+url="https://github.com/yonggekkk/argosbx/releases/download/argosbx/private.key"; out="$HOME/agsbx/private.key"; (command -v curl>/dev/null 2>&1 && curl -Ls -o "$out" --retry 2 "$url") || (command -v wget>/dev/null 2>&1 && timeout 3 wget -q -O "$out" --tries=2 "$url")
+url="https://github.com/yonggekkk/argosbx/releases/download/argosbx/cert.pem"; out="$HOME/agsbx/cert.pem"; (command -v curl>/dev/null 2>&1 && curl -Ls -o "$out" --retry 2 "$url") || (command -v wget>/dev/null 2>&1 && timeout 3 wget -q -O "$out" --tries=2 "$url")
+fi
+if [ -n "$hyp" ]; then
+hyp=hypt
+if [ -z "$port_hy2" ] && [ ! -e "$HOME/agsbx/port_hy2" ]; then
+port_hy2=$(shuf -i 10000-65535 -n 1)
+echo "$port_hy2" > "$HOME/agsbx/port_hy2"
+elif [ -n "$port_hy2" ]; then
+echo "$port_hy2" > "$HOME/agsbx/port_hy2"
+fi
+port_hy2=$(cat "$HOME/agsbx/port_hy2")
+echo "Порт Hysteria2: $port_hy2"
+cat >> "$HOME/agsbx/sb.json" <<EOF
     {
         "type": "hysteria2",
-        "sniff": true,
-        "sniff_override_destination": true,
         "tag": "hy2-sb",
         "listen": "::",
         "listen_port": ${port_hy2},
@@ -498,14 +460,27 @@ cat > /etc/s-box/sb10.json <<EOF
             "alpn": [
                 "h3"
             ],
-            "certificate_path": "$certificatec_hy2",
-            "key_path": "$certificatep_hy2"
+            "certificate_path": "$HOME/agsbx/cert.pem",
+            "key_path": "$HOME/agsbx/private.key"
         }
     },
+EOF
+else
+hyp=hyptargo
+fi
+if [ -n "$tup" ]; then
+tup=tupt
+if [ -z "$port_tu" ] && [ ! -e "$HOME/agsbx/port_tu" ]; then
+port_tu=$(shuf -i 10000-65535 -n 1)
+echo "$port_tu" > "$HOME/agsbx/port_tu"
+elif [ -n "$port_tu" ]; then
+echo "$port_tu" > "$HOME/agsbx/port_tu"
+fi
+port_tu=$(cat "$HOME/agsbx/port_tu")
+echo "Порт Tuic: $port_tu"
+cat >> "$HOME/agsbx/sb.json" <<EOF
         {
             "type":"tuic",
-            "sniff": true,
-            "sniff_override_destination": true,
             "tag": "tuic5-sb",
             "listen": "::",
             "listen_port": ${port_tu},
@@ -521,187 +496,181 @@ cat > /etc/s-box/sb10.json <<EOF
                 "alpn": [
                     "h3"
                 ],
-                "certificate_path": "$certificatec_tuic",
-                "key_path": "$certificatep_tuic"
+                "certificate_path": "$HOME/agsbx/cert.pem",
+                "key_path": "$HOME/agsbx/private.key"
             }
-        }
-],
-"outbounds": [
-{
-"type":"direct",
-"tag":"direct",
-"domain_strategy": "$ipv"
-},
-{
-"type":"direct",
-"tag": "vps-outbound-v4", 
-"domain_strategy":"prefer_ipv4"
-},
-{
-"type":"direct",
-"tag": "vps-outbound-v6",
-"domain_strategy":"prefer_ipv6"
-},
-{
-"type": "socks",
-"tag": "socks-out",
-"server": "127.0.0.1",
-"server_port": 40000,
-"version": "5"
-},
-{
-"type":"direct",
-"tag":"socks-IPv4-out",
-"detour":"socks-out",
-"domain_strategy":"prefer_ipv4"
-},
-{
-"type":"direct",
-"tag":"socks-IPv6-out",
-"detour":"socks-out",
-"domain_strategy":"prefer_ipv6"
-},
-{
-"type":"direct",
-"tag":"warp-IPv4-out",
-"detour":"wireguard-out",
-"domain_strategy":"prefer_ipv4"
-},
-{
-"type":"direct",
-"tag":"warp-IPv6-out",
-"detour":"wireguard-out",
-"domain_strategy":"prefer_ipv6"
-},
-{
-"type":"wireguard",
-"tag":"wireguard-out",
-"server":"$endip",
-"server_port":2408,
-"local_address":[
-"172.16.0.2/32",
-"${v6}/128"
-],
-"private_key":"$pvk",
-"peer_public_key":"bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-"reserved":$res
-},
-{
-"type": "block",
-"tag": "block"
-}
-],
-"route":{
-"rules":[
-{
-"protocol": [
-"quic",
-"stun"
-],
-"outbound": "block"
-},
-{
-"outbound":"warp-IPv4-out",
-"domain_suffix": [
-"yg_kkk"
-]
-,"geosite": [
-"yg_kkk"
-]
-},
-{
-"outbound":"warp-IPv6-out",
-"domain_suffix": [
-"yg_kkk"
-]
-,"geosite": [
-"yg_kkk"
-]
-},
-{
-"outbound":"socks-IPv4-out",
-"domain_suffix": [
-"yg_kkk"
-]
-,"geosite": [
-"yg_kkk"
-]
-},
-{
-"outbound":"socks-IPv6-out",
-"domain_suffix": [
-"yg_kkk"
-]
-,"geosite": [
-"yg_kkk"
-]
-},
-{
-"outbound":"vps-outbound-v4",
-"domain_suffix": [
-"yg_kkk"
-]
-,"geosite": [
-"yg_kkk"
-]
-},
-{
-"outbound":"vps-outbound-v6",
-"domain_suffix": [
-"yg_kkk"
-]
-,"geosite": [
-"yg_kkk"
-]
-},
-{
-"outbound": "direct",
-"network": "udp,tcp"
-}
-]
-}
-}
+        },
 EOF
-
-cat > /etc/s-box/sb11.json <<EOF
-{
-"log": {
-    "disabled": false,
-    "level": "info",
-    "timestamp": true
-  },
-  "inbounds": [
-    {
-      "type": "vless",
-
-      
-      "tag": "vless-sb",
-      "listen": "::",
-      "listen_port": ${port_vl_re},
-      "users": [
+else
+tup=tuptargo
+fi
+if [ -n "$anp" ]; then
+anp=anpt
+if [ -z "$port_an" ] && [ ! -e "$HOME/agsbx/port_an" ]; then
+port_an=$(shuf -i 10000-65535 -n 1)
+echo "$port_an" > "$HOME/agsbx/port_an"
+elif [ -n "$port_an" ]; then
+echo "$port_an" > "$HOME/agsbx/port_an"
+fi
+port_an=$(cat "$HOME/agsbx/port_an")
+echo "Порт Anytls: $port_an"
+cat >> "$HOME/agsbx/sb.json" <<EOF
         {
-          "uuid": "${uuid}",
-          "flow": "xtls-rprx-vision"
-        }
-      ],
-      "tls": {
-        "enabled": true,
-        "server_name": "${ym_vl_re}",
-          "reality": {
-          "enabled": true,
-          "handshake": {
-            "server": "${ym_vl_re}",
-            "server_port": 443
-          },
-          "private_key": "$private_key",
-          "short_id": ["$short_id"]
-        }
-      }
-    },
+            "type":"anytls",
+            "tag":"anytls-sb",
+            "listen":"::",
+            "listen_port":${port_an},
+            "users":[
+                {
+                  "password":"${uuid}"
+                }
+            ],
+            "padding_scheme":[],
+            "tls":{
+                "enabled": true,
+                "certificate_path": "$HOME/agsbx/cert.pem",
+                "key_path": "$HOME/agsbx/private.key"
+            }
+        },
+EOF
+else
+anp=anptargo
+fi
+if [ -n "$arp" ]; then
+arp=arpt
+if [ -z "$ym_vl_re" ]; then
+ym_vl_re=apple.com
+fi
+echo "$ym_vl_re" > "$HOME/agsbx/ym_vl_re"
+echo "Домен Reality: $ym_vl_re"
+mkdir -p "$HOME/agsbx/sbk"
+if [ ! -e "$HOME/agsbx/sbk/private_key" ]; then
+key_pair=$("$HOME/agsbx/sing-box" generate reality-keypair)
+private_key=$(echo "$key_pair" | awk '/PrivateKey/ {print $2}' | tr -d '"')
+public_key=$(echo "$key_pair" | awk '/PublicKey/ {print $2}' | tr -d '"')
+short_id=$("$HOME/agsbx/sing-box" generate rand --hex 4)
+echo "$private_key" > "$HOME/agsbx/sbk/private_key"
+echo "$public_key" > "$HOME/agsbx/sbk/public_key"
+echo "$short_id" > "$HOME/agsbx/sbk/short_id"
+fi
+private_key_s=$(cat "$HOME/agsbx/sbk/private_key")
+public_key_s=$(cat "$HOME/agsbx/sbk/public_key")
+short_id_s=$(cat "$HOME/agsbx/sbk/short_id")
+if [ -z "$port_ar" ] && [ ! -e "$HOME/agsbx/port_ar" ]; then
+port_ar=$(shuf -i 10000-65535 -n 1)
+echo "$port_ar" > "$HOME/agsbx/port_ar"
+elif [ -n "$port_ar" ]; then
+echo "$port_ar" > "$HOME/agsbx/port_ar"
+fi
+port_ar=$(cat "$HOME/agsbx/port_ar")
+echo "Порт Any-Reality: $port_ar"
+cat >> "$HOME/agsbx/sb.json" <<EOF
+        {
+            "type":"anytls",
+            "tag":"anyreality-sb",
+            "listen":"::",
+            "listen_port":${port_ar},
+            "users":[
+                {
+                  "password":"${uuid}"
+                }
+            ],
+            "padding_scheme":[],
+            "tls": {
+            "enabled": true,
+            "server_name": "${ym_vl_re}",
+             "reality": {
+              "enabled": true,
+              "handshake": {
+              "server": "${ym_vl_re}",
+              "server_port": 443
+             },
+             "private_key": "$private_key_s",
+             "short_id": ["$short_id_s"]
+            }
+          }
+        },
+EOF
+else
+arp=arptargo
+fi
+if [ -n "$ssp" ]; then
+ssp=sspt
+if [ ! -e "$HOME/agsbx/sskey" ]; then
+sskey=$("$HOME/agsbx/sing-box" generate rand 16 --base64)
+echo "$sskey" > "$HOME/agsbx/sskey"
+fi
+if [ -z "$port_ss" ] && [ ! -e "$HOME/agsbx/port_ss" ]; then
+port_ss=$(shuf -i 10000-65535 -n 1)
+echo "$port_ss" > "$HOME/agsbx/port_ss"
+elif [ -n "$port_ss" ]; then
+echo "$port_ss" > "$HOME/agsbx/port_ss"
+fi
+sskey=$(cat "$HOME/agsbx/sskey")
+port_ss=$(cat "$HOME/agsbx/port_ss")
+echo "Порт Shadowsocks-2022: $port_ss"
+cat >> "$HOME/agsbx/sb.json" <<EOF
+        {
+            "type": "shadowsocks",
+            "tag":"ss-2022",
+            "listen": "::",
+            "listen_port": $port_ss,
+            "method": "2022-blake3-aes-128-gcm",
+            "password": "$sskey"
+    },  
+EOF
+else
+ssp=ssptargo
+fi
+}
+
+xrsbvm(){
+if [ -n "$vmp" ]; then
+vmp=vmpt
+if [ -z "$port_vm_ws" ] && [ ! -e "$HOME/agsbx/port_vm_ws" ]; then
+port_vm_ws=$(shuf -i 10000-65535 -n 1)
+echo "$port_vm_ws" > "$HOME/agsbx/port_vm_ws"
+elif [ -n "$port_vm_ws" ]; then
+echo "$port_vm_ws" > "$HOME/agsbx/port_vm_ws"
+fi
+port_vm_ws=$(cat "$HOME/agsbx/port_vm_ws")
+echo "Порт Vmess-ws: $port_vm_ws"
+if [ -n "$cdnym" ]; then
+echo "$cdnym" > "$HOME/agsbx/cdnym"
+echo "Host-домен CDN для 80-х портов или Origin CDN (убедитесь, что IP разрешен в домен CF): $cdnym"
+fi
+if [ -e "$HOME/agsbx/xr.json" ]; then
+cat >> "$HOME/agsbx/xr.json" <<EOF
+        {
+            "tag": "vmess-xr",
+            "listen": "::",
+            "port": ${port_vm_ws},
+            "protocol": "vmess",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${uuid}"
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                  "path": "${uuid}-vm"
+            }
+        },
+            "sniffing": {
+            "enabled": true,
+            "destOverride": ["http", "tls", "quic"],
+            "metadataOnly": false
+            }
+         }, 
+EOF
+else
+cat >> "$HOME/agsbx/sb.json" <<EOF
 {
         "type": "vmess",
-
-
         "tag": "vmess-sb",
         "listen": "::",
         "listen_port": ${port_vm_ws},
@@ -715,2893 +684,829 @@ cat > /etc/s-box/sb11.json <<EOF
             "type": "ws",
             "path": "${uuid}-vm",
             "max_early_data":2048,
-            "early_data_header_name": "Sec-WebSocket-Protocol"    
-        },
-        "tls":{
-                "enabled": ${tlsyn},
-                "server_name": "${ym_vm_ws}",
-                "certificate_path": "$certificatec_vmess_ws",
-                "key_path": "$certificatep_vmess_ws"
-            }
-    }, 
-    {
-        "type": "hysteria2",
-
-
-        "tag": "hy2-sb",
-        "listen": "::",
-        "listen_port": ${port_hy2},
-        "users": [
-            {
-                "password": "${uuid}"
-            }
-        ],
-        "ignore_client_bandwidth":false,
-        "tls": {
-            "enabled": true,
-            "alpn": [
-                "h3"
-            ],
-            "certificate_path": "$certificatec_hy2",
-            "key_path": "$certificatep_hy2"
+            "early_data_header_name": "Sec-WebSocket-Protocol"
         }
     },
-        {
-            "type":"tuic",
+EOF
+fi
+else
+vmp=vmptargo
+fi
+}
 
-     
-            "tag": "tuic5-sb",
-            "listen": "::",
-            "listen_port": ${port_tu},
-            "users": [
-                {
-                    "uuid": "${uuid}",
-                    "password": "${uuid}"
-                }
+xrsbso(){
+if [ -n "$sop" ]; then
+sop=sopt
+if [ -z "$port_so" ] && [ ! -e "$HOME/agsbx/port_so" ]; then
+port_so=$(shuf -i 10000-65535 -n 1)
+echo "$port_so" > "$HOME/agsbx/port_so"
+elif [ -n "$port_so" ]; then
+echo "$port_so" > "$HOME/agsbx/port_so"
+fi
+port_so=$(cat "$HOME/agsbx/port_so")
+echo "Порт Socks5: $port_so"
+if [ -e "$HOME/agsbx/xr.json" ]; then
+cat >> "$HOME/agsbx/xr.json" <<EOF
+        {
+         "tag": "socks5-xr",
+         "port": ${port_so},
+         "listen": "::",
+         "protocol": "socks",
+         "settings": {
+            "auth": "password",
+             "accounts": [
+               {
+               "user": "${uuid}",
+               "pass": "${uuid}"
+               }
             ],
-            "congestion_control": "bbr",
-            "tls":{
-                "enabled": true,
-                "alpn": [
-                    "h3"
-                ],
-                "certificate_path": "$certificatec_tuic",
-                "key_path": "$certificatep_tuic"
+            "udp": true
+          },
+            "sniffing": {
+            "enabled": true,
+            "destOverride": ["http", "tls", "quic"],
+            "metadataOnly": false
             }
+         }, 
+EOF
+else
+cat >> "$HOME/agsbx/sb.json" <<EOF
+    {
+      "tag": "socks5-sb",
+      "type": "socks",
+      "listen": "::",
+      "listen_port": ${port_so},
+      "users": [
+      {
+      "username": "${uuid}",
+      "password": "${uuid}"
+      }
+     ]
+    },
+EOF
+fi
+else
+sop=soptargo
+fi
+}
+
+xrsbout(){
+if [ -e "$HOME/agsbx/xr.json" ]; then
+sed -i '${s/,\s*$//}' "$HOME/agsbx/xr.json"
+cat >> "$HOME/agsbx/xr.json" <<EOF
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct",
+      "settings": {
+      "domainStrategy":"${xryx}"
+     }
+    },
+    {
+      "tag": "x-warp-out",
+      "protocol": "wireguard",
+      "settings": {
+        "secretKey": "${pvk}",
+        "address": [
+          "172.16.0.2/32",
+          "${wpv6}/128"
+        ],
+        "peers": [
+          {
+            "publicKey": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+            "allowedIPs": [
+              "0.0.0.0/0",
+              "::/0"
+            ],
+            "endpoint": "${xendip}:2408"
+          }
+        ],
+        "reserved": ${res}
         }
-],
-"endpoints":[
-{
-"type":"wireguard",
-"tag":"warp-out",
-"address":[
-"172.16.0.2/32",
-"${v6}/128"
-],
-"private_key":"$pvk",
-"peers": [
-{
-"address": "$endip",
-"port":2408,
-"public_key":"bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
-"allowed_ips": [
-"0.0.0.0/0",
-"::/0"
-],
-"reserved":$res
+    },
+    {
+      "tag":"warp-out",
+      "protocol":"freedom",
+        "settings":{
+        "domainStrategy":"${wxryx}"
+       },
+       "proxySettings":{
+       "tag":"x-warp-out"
+     }
 }
-]
-}
-],
-"outbounds": [
-{
-"type":"direct",
-"tag":"direct",
-"domain_strategy": "$ipv"
-},
-{
-"type":"direct",
-"tag":"vps-outbound-v4", 
-"domain_strategy":"prefer_ipv4"
-},
-{
-"type":"direct",
-"tag":"vps-outbound-v6",
-"domain_strategy":"prefer_ipv6"
-},
-{
-"type": "socks",
-"tag": "socks-out",
-"server": "127.0.0.1",
-"server_port": 40000,
-"version": "5"
-}
-],
-"route":{
-"rules":[
-{
- "action": "sniff"
-},
-{
-"action": "resolve",
-"domain_suffix":[
-"yg_kkk"
-],
-"strategy": "prefer_ipv4"
-},
-{
-"action": "resolve",
-"domain_suffix":[
-"yg_kkk"
-],
-"strategy": "prefer_ipv6"
-},
-{
-"domain_suffix":[
-"yg_kkk"
-],
-"outbound":"socks-out"
-},
-{
-"domain_suffix":[
-"yg_kkk"
-],
-"outbound":"warp-out"
-},
-{
-"outbound":"vps-outbound-v4",
-"domain_suffix":[
-"yg_kkk"
-]
-},
-{
-"outbound":"vps-outbound-v6",
-"domain_suffix":[
-"yg_kkk"
-]
-},
-{
-"outbound": "direct",
-"network": "udp,tcp"
-}
-]
-}
+  ],
+  "routing": {
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {
+        "type": "field",
+        "ip": [ ${xip} ],
+        "network": "tcp,udp",
+        "outboundTag": "${x1outtag}"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "outboundTag": "${x2outtag}"
+      }
+    ]
+  }
 }
 EOF
-sbnh=$(/etc/s-box/sing-box version 2>/dev/null | awk '/version/{print $NF}' | cut -d '.' -f 1,2)
-[[ "$sbnh" == "1.10" ]] && num=10 || num=11
-cp /etc/s-box/sb${num}.json /etc/s-box/sb.json
-}
-
-sbservice(){
-if [[ x"${release}" == x"alpine" ]]; then
-echo '#!/sbin/openrc-run
-description="sing-box service"
-command="/etc/s-box/sing-box"
-command_args="run -c /etc/s-box/sb.json"
-command_background=true
-pidfile="/var/run/sing-box.pid"' > /etc/init.d/sing-box
-chmod +x /etc/init.d/sing-box
-rc-update add sing-box default
-rc-service sing-box start
-else
-cat > /etc/systemd/system/sing-box.service <<EOF
+if pidof systemd >/dev/null 2>&1 && [ "$EUID" -eq 0 ]; then
+cat > /etc/systemd/system/xr.service <<EOF
 [Unit]
-After=network.target nss-lookup.target
+Description=xr service
+After=network.target
 [Service]
-User=root
-WorkingDirectory=/root
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/etc/s-box/sing-box run -c /etc/s-box/sb.json
-ExecReload=/bin/kill -HUP \$MAINPID
+Type=simple
+NoNewPrivileges=yes
+TimeoutStartSec=0
+ExecStart=/root/agsbx/xray run -c /root/agsbx/xr.json
 Restart=on-failure
-RestartSec=10
-LimitNOFILE=infinity
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl daemon-reload
-systemctl enable sing-box >/dev/null 2>&1
-systemctl start sing-box
-systemctl restart sing-box
+systemctl daemon-reload >/dev/null 2>&1
+systemctl enable xr >/dev/null 2>&1
+systemctl start xr >/dev/null 2>&1
+elif command -v rc-service >/dev/null 2>&1 && [ "$EUID" -eq 0 ]; then
+cat > /etc/init.d/xray <<EOF
+#!/sbin/openrc-run
+description="xr service"
+command="/root/agsbx/xray"
+command_args="run -c /root/agsbx/xr.json"
+command_background=yes
+pidfile="/run/xray.pid"
+command_background="yes"
+depend() {
+need net
+}
+EOF
+chmod +x /etc/init.d/xray >/dev/null 2>&1
+rc-update add xray default >/dev/null 2>&1
+rc-service xray start >/dev/null 2>&1
+else
+nohup "$HOME/agsbx/xray" run -c "$HOME/agsbx/xr.json" >/dev/null 2>&1 &
+fi
+fi
+if [ -e "$HOME/agsbx/sb.json" ]; then
+sed -i '${s/,\s*$//}' "$HOME/agsbx/sb.json"
+cat >> "$HOME/agsbx/sb.json" <<EOF
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct"
+    }
+  ],
+  "endpoints": [
+    {
+      "type": "wireguard",
+      "tag": "warp-out",
+      "address": [
+        "172.16.0.2/32",
+        "${wpv6}/128"
+      ],
+      "private_key": "${pvk}",
+      "peers": [
+        {
+          "address": "${sendip}",
+          "port": 2408,
+          "public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+          "allowed_ips": [
+            "0.0.0.0/0",
+            "::/0"
+          ],
+          "reserved": $res
+        }
+      ]
+    }
+  ],
+  "route": {
+    "rules": [
+       {
+          "action": "sniff"
+        },
+       {
+        "action": "resolve",
+         "strategy": "${sbyx}"
+       },
+      {
+        "ip_cidr": [ ${sip} ],         
+        "outbound": "${s1outtag}"
+      }
+    ],
+    "final": "${s2outtag}"
+  }
+}
+EOF
+if pidof systemd >/dev/null 2>&1 && [ "$EUID" -eq 0 ]; then
+cat > /etc/systemd/system/sb.service <<EOF
+[Unit]
+Description=sb service
+After=network.target
+[Service]
+Type=simple
+NoNewPrivileges=yes
+TimeoutStartSec=0
+ExecStart=/root/agsbx/sing-box run -c /root/agsbx/sb.json
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload >/dev/null 2>&1
+systemctl enable sb >/dev/null 2>&1
+systemctl start sb >/dev/null 2>&1
+elif command -v rc-service >/dev/null 2>&1 && [ "$EUID" -eq 0 ]; then
+cat > /etc/init.d/sing-box <<EOF
+#!/sbin/openrc-run
+description="sb service"
+command="/root/agsbx/sing-box"
+command_args="run -c /root/agsbx/sb.json"
+command_background=yes
+pidfile="/run/sing-box.pid"
+command_background="yes"
+depend() {
+need net
+}
+EOF
+chmod +x /etc/init.d/sing-box >/dev/null 2>&1
+rc-update add sing-box default >/dev/null 2>&1
+rc-service sing-box start >/dev/null 2>&1
+else
+nohup "$HOME/agsbx/sing-box" run -c "$HOME/agsbx/sb.json" >/dev/null 2>&1 &
+fi
 fi
 }
-
-ipuuid(){
-if [[ x"${release}" == x"alpine" ]]; then
-status_cmd="rc-service sing-box status"
-status_pattern="started"
+ins(){
+if [ "$hyp" != yes ] && [ "$tup" != yes ] && [ "$anp" != yes ] && [ "$arp" != yes ] && [ "$ssp" != yes ]; then
+installxray
+xrsbvm
+xrsbso
+warpsx
+xrsbout
+hyp="hyptargo"; tup="tuptargo"; anp="anptargo"; arp="arptargo"; ssp="ssptargo"
+elif [ "$xhp" != yes ] && [ "$vlp" != yes ] && [ "$vxp" != yes ] && [ "$vwp" != yes ]; then
+installsb
+xrsbvm
+xrsbso
+warpsx
+xrsbout
+xhp="xhptargo"; vlp="vlptargo"; vxp="vxptargo"; vwp="vwptargo"
 else
-status_cmd="systemctl status sing-box"
-status_pattern="active"
+installsb
+installxray
+xrsbvm
+xrsbso
+warpsx
+xrsbout
 fi
-if [[ -n $($status_cmd 2>/dev/null | grep -w "$status_pattern") && -f '/etc/s-box/sb.json' ]]; then
-v4v6
-if [[ -n $v4 && -n $v6 ]]; then
-green "Обнаружен двухстековый VPS (IPv4+IPv6). Выберите приоритетный IP для конфигурации."
-green "Для NAT VPS обычно рекомендуется выбирать IPv6."
-yellow "1. Использовать конфигурацию IPv4 (по умолчанию)"
-yellow "2. Использовать конфигурацию IPv6"
-readp "Пожалуйста, выберите [1-2]: " menu
-if [ -z "$menu" ] || [ "$menu" = "1" ]; then
-sbdnsip='tls://8.8.8.8/dns-query'
-echo "$sbdnsip" > /etc/s-box/sbdnsip.log
-server_ip="$v4"
-echo "$server_ip" > /etc/s-box/server_ip.log
-server_ipcl="$v4"
-echo "$server_ipcl" > /etc/s-box/server_ipcl.log
+if [ -n "$argo" ] && [ -n "$vmag" ]; then
+echo
+echo "=========Включение ядра Cloudflared-argo========="
+if [ ! -e "$HOME/agsbx/cloudflared" ]; then
+argocore=$({ command -v curl >/dev/null 2>&1 && curl -Ls https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared || wget -qO- https://data.jsdelivr.com/v1/package/gh/cloudflare/cloudflared; } | grep -Eo '"[0-9.]+"' | sed -n 1p | tr -d '",')
+echo "Загрузка последней стабильной версии ядра Cloudflared-argo: $argocore"
+url="https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu"; out="$HOME/agsbx/cloudflared"; (command -v curl>/dev/null 2>&1 && curl -Lo "$out" -# --retry 2 "$url") || (command -v wget>/dev/null 2>&1 && timeout 3 wget -O "$out" --tries=2 "$url")
+chmod +x "$HOME/agsbx/cloudflared"
+fi
+if [ "$argo" = "vmpt" ]; then argoport=$(cat "$HOME/agsbx/port_vm_ws" 2>/dev/null); echo "Vmess" > "$HOME/agsbx/vlvm"; elif [ "$argo" = "vwpt" ]; then argoport=$(cat "$HOME/agsbx/port_vw" 2>/dev/null); echo "Vless" > "$HOME/agsbx/vlvm"; fi; echo "$argoport" > "$HOME/agsbx/argoport.log"
+if [ -n "${ARGO_DOMAIN}" ] && [ -n "${ARGO_AUTH}" ]; then
+argoname='фиксированного'
+if pidof systemd >/dev/null 2>&1 && [ "$EUID" -eq 0 ]; then
+cat > /etc/systemd/system/argo.service <<EOF
+[Unit]
+Description=argo service
+After=network.target
+[Service]
+Type=simple
+NoNewPrivileges=yes
+TimeoutStartSec=0
+ExecStart=/root/agsbx/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token "${ARGO_AUTH}"
+Restart=on-failure
+RestartSec=5s
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload >/dev/null 2>&1
+systemctl enable argo >/dev/null 2>&1
+systemctl start argo >/dev/null 2>&1
+elif command -v rc-service >/dev/null 2>&1 && [ "$EUID" -eq 0 ]; then
+cat > /etc/init.d/argo <<EOF
+#!/sbin/openrc-run
+description="argo service"
+command="/root/agsbx/cloudflared tunnel"
+command_args="--no-autoupdate --edge-ip-version auto --protocol http2 run --token ${ARGO_AUTH}"
+pidfile="/run/argo.pid"
+command_background="yes"
+depend() {
+need net
+}
+EOF
+chmod +x /etc/init.d/argo >/dev/null 2>&1
+rc-update add argo default >/dev/null 2>&1
+rc-service argo start >/dev/null 2>&1
 else
-sbdnsip='tls://[2001:4860:4860::8888]/dns-query'
-echo "$sbdnsip" > /etc/s-box/sbdnsip.log
-server_ip="[$v6]"
-echo "$server_ip" > /etc/s-box/server_ip.log
-server_ipcl="$v6"
-echo "$server_ipcl" > /etc/s-box/server_ipcl.log
+nohup "$HOME/agsbx/cloudflared" tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token "${ARGO_AUTH}" >/dev/null 2>&1 &
+fi
+echo "${ARGO_DOMAIN}" > "$HOME/agsbx/sbargoym.log"
+echo "${ARGO_AUTH}" > "$HOME/agsbx/sbargotoken.log"
+else
+argoname='временного'
+nohup "$HOME/agsbx/cloudflared" tunnel --url http://localhost:$(cat $HOME/agsbx/argoport.log) --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/agsbx/argo.log 2>&1 &
+fi
+echo "Запрос $argoname туннеля Argo... пожалуйста, подождите"
+sleep 8
+if [ -n "${ARGO_DOMAIN}" ] && [ -n "${ARGO_AUTH}" ]; then
+argodomain=$(cat "$HOME/agsbx/sbargoym.log" 2>/dev/null)
+else
+argodomain=$(grep -a trycloudflare.com "$HOME/agsbx/argo.log" 2>/dev/null | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
+fi
+if [ -n "${argodomain}" ]; then
+echo "$argoname туннель Argo успешно запрошен"
+else
+echo "Не удалось запросить $argoname туннель Argo, попробуйте позже"
+fi
+fi
+sleep 5
+echo
+if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsbx/(s|x)' || pgrep -f 'agsbx/(s|x)' >/dev/null 2>&1 ; then
+[ -f ~/.bashrc ] || touch ~/.bashrc
+sed -i '/agsbx/d' ~/.bashrc
+SCRIPT_PATH="$HOME/bin/agsbx"
+mkdir -p "$HOME/bin"
+(command -v curl >/dev/null 2>&1 && curl -sL "$agsbxurl" -o "$SCRIPT_PATH") || (command -v wget >/dev/null 2>&1 && wget -qO "$SCRIPT_PATH" "$agsbxurl")
+chmod +x "$SCRIPT_PATH"
+if ! pidof systemd >/dev/null 2>&1 && ! command -v rc-service >/dev/null 2>&1; then
+echo "if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsbx/(s|x)' && ! pgrep -f 'agsbx/(s|x)' >/dev/null 2>&1; then echo 'Обнаружено возможное прерывание работы системы или ошибка формата переменной? Рекомендуется ввести reboot в консоли SSH для перезагрузки сервера. Сейчас автоматически выполняется восстановление узлов скрипта Argosbx, пожалуйста, подождите...'; sleep 6; export cdnym=\"${cdnym}\" name=\"${name}\" ippz=\"${ippz}\" argo=\"${argo}\" uuid=\"${uuid}\" $wap=\"${warp}\" $xhp=\"${port_xh}\" $vxp=\"${port_vx}\" $ssp=\"${port_ss}\" $sop=\"${port_so}\" $anp=\"${port_an}\" $arp=\"${port_ar}\" $vlp=\"${port_vl_re}\" $vwp=\"${port_vw}\" $vmp=\"${port_vm_ws}\" $hyp=\"${port_hy2}\" $tup=\"${port_tu}\" reym=\"${ym_vl_re}\" agn=\"${ARGO_DOMAIN}\" agk=\"${ARGO_AUTH}\"; bash "$HOME/bin/agsbx"; fi" >> ~/.bashrc
+fi
+sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
+echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+grep -qxF 'source ~/.bashrc' ~/.bash_profile 2>/dev/null || echo 'source ~/.bashrc' >> ~/.bash_profile
+. ~/.bashrc 2>/dev/null
+crontab -l > /tmp/crontab.tmp 2>/dev/null
+if ! pidof systemd >/dev/null 2>&1 && ! command -v rc-service >/dev/null 2>&1; then
+sed -i '/agsbx\/sing-box/d' /tmp/crontab.tmp
+sed -i '/agsbx\/xray/d' /tmp/crontab.tmp
+if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'agsbx/s' || pgrep -f 'agsbx/s' >/dev/null 2>&1 ; then
+echo '@reboot sleep 10 && /bin/sh -c "nohup $HOME/agsbx/sing-box run -c $HOME/agsbx/sb.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
+fi
+if find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -q 'agsbx/x' || pgrep -f 'agsbx/x' >/dev/null 2>&1 ; then
+echo '@reboot sleep 10 && /bin/sh -c "nohup $HOME/agsbx/xray run -c $HOME/agsbx/xr.json >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
+fi
+fi
+sed -i '/agsbx\/cloudflared/d' /tmp/crontab.tmp
+if [ -n "$argo" ] && [ -n "$vmag" ]; then
+if [ -n "${ARGO_DOMAIN}" ] && [ -n "${ARGO_AUTH}" ]; then
+if ! pidof systemd >/dev/null 2>&1 && ! command -v rc-service >/dev/null 2>&1; then
+echo '@reboot sleep 10 && /bin/sh -c "nohup $HOME/agsbx/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat $HOME/agsbx/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &"' >> /tmp/crontab.tmp
 fi
 else
-yellow "VPS не является двухстековым, переключение IP не требуется."
-serip=$(curl -s4m5 icanhazip.com -k || curl -s6m5 icanhazip.com -k)
-if [[ "$serip" =~ : ]]; then
-sbdnsip='tls://[2001:4860:4860::8888]/dns-query'
-echo "$sbdnsip" > /etc/s-box/sbdnsip.log
+echo '@reboot sleep 10 && /bin/sh -c "nohup $HOME/agsbx/cloudflared tunnel --url http://localhost:$(cat $HOME/agsbx/argoport.log) --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/agsbx/argo.log 2>&1 &"' >> /tmp/crontab.tmp
+fi
+fi
+crontab /tmp/crontab.tmp >/dev/null 2>&1
+rm /tmp/crontab.tmp
+echo "Процесс скрипта Argosbx успешно запущен, установка завершена" && sleep 2
+else
+echo "Процесс скрипта Argosbx не запущен, ошибка установки" && exit
+fi
+}
+argosbxstatus(){
+echo "=========Текущий статус трех основных ядер========="
+procs=$(find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null)
+if echo "$procs" | grep -Eq 'agsbx/s' || pgrep -f 'agsbx/s' >/dev/null 2>&1; then
+echo "Sing-box (Версия V$("$HOME/agsbx/sing-box" version 2>/dev/null | awk '/version/{print $NF}')): Работает"
+else
+echo "Sing-box: Не включен"
+fi
+if echo "$procs" | grep -Eq 'agsbx/x' || pgrep -f 'agsbx/x' >/dev/null 2>&1; then
+echo "Xray (Версия V$("$HOME/agsbx/xray" version 2>/dev/null | awk '/^Xray/{print $2}')): Работает"
+else
+echo "Xray: Не включен"
+fi
+if echo "$procs" | grep -Eq 'agsbx/c' || pgrep -f 'agsbx/c' >/dev/null 2>&1; then
+echo "Argo (Версия V$("$HOME/agsbx/cloudflared" version 2>/dev/null | awk '{print $3}')): Работает"
+else
+echo "Argo: Не включен"
+fi
+}
+cip(){
+ipbest(){
+serip=$( (command -v curl >/dev/null 2>&1 && (curl -s4m5 -k "$v46url" 2>/dev/null || curl -s6m5 -k "$v46url" 2>/dev/null) ) || (command -v wget >/dev/null 2>&1 && (timeout 3 wget -4 -qO- --tries=2 "$v46url" 2>/dev/null || timeout 3 wget -6 -qO- --tries=2 "$v46url" 2>/dev/null) ) )
+if echo "$serip" | grep -q ':'; then
 server_ip="[$serip]"
-echo "$server_ip" > /etc/s-box/server_ip.log
-server_ipcl="$serip"
-echo "$server_ipcl" > /etc/s-box/server_ipcl.log
+echo "$server_ip" > "$HOME/agsbx/server_ip.log"
 else
-sbdnsip='tls://8.8.8.8/dns-query'
-echo "$sbdnsip" > /etc/s-box/sbdnsip.log
 server_ip="$serip"
-echo "$server_ip" > /etc/s-box/server_ip.log
-server_ipcl="$serip"
-echo "$server_ipcl" > /etc/s-box/server_ipcl.log
-fi
-fi
-else
-red "Служба Sing-box не запущена" && exit
+echo "$server_ip" > "$HOME/agsbx/server_ip.log"
 fi
 }
-
-wgcfgo(){
-warpcheck
-if [[ ! $wgcfv4 =~ on|plus && ! $wgcfv6 =~ on|plus ]]; then
-ipuuid
-else
-systemctl stop wg-quick@wgcf >/dev/null 2>&1
-kill -15 $(pgrep warp-go) >/dev/null 2>&1 && sleep 2
-ipuuid
-systemctl start wg-quick@wgcf >/dev/null 2>&1
-systemctl restart warp-go >/dev/null 2>&1
-systemctl enable warp-go >/dev/null 2>&1
-systemctl start warp-go >/dev/null 2>&1
-fi
-}
-
-result_vl_vm_hy_tu(){
-if [[ -f /root/ygkkkca/cert.crt && -f /root/ygkkkca/private.key && -s /root/ygkkkca/cert.crt && -s /root/ygkkkca/private.key ]]; then
-ym=`bash ~/.acme.sh/acme.sh --list | tail -1 | awk '{print $1}'`
-echo $ym > /root/ygkkkca/ca.log
-fi
-rm -rf /etc/s-box/vm_ws_argo.txt /etc/s-box/vm_ws.txt /etc/s-box/vm_ws_tls.txt
-sbdnsip=$(cat /etc/s-box/sbdnsip.log)
-server_ip=$(cat /etc/s-box/server_ip.log)
-server_ipcl=$(cat /etc/s-box/server_ipcl.log)
-uuid=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].users[0].uuid')
-vl_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].listen_port')
-vl_name=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].tls.server_name')
-public_key=$(cat /etc/s-box/public.key)
-short_id=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].tls.reality.short_id[0]')
-argo=$(cat /etc/s-box/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
-ws_path=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].transport.path')
-vm_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].listen_port')
-tls=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.enabled')
-vm_name=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.server_name')
-if [[ "$tls" = "false" ]]; then
-if [[ -f /etc/s-box/cfymjx.txt ]]; then
-vm_name=$(cat /etc/s-box/cfymjx.txt 2>/dev/null)
-else
-vm_name=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.server_name')
-fi
-vmadd_local=$server_ipcl
-vmadd_are_local=$server_ip
-else
-vmadd_local=$vm_name
-vmadd_are_local=$vm_name
-fi
-if [[ -f /etc/s-box/cfvmadd_local.txt ]]; then
-vmadd_local=$(cat /etc/s-box/cfvmadd_local.txt 2>/dev/null)
-vmadd_are_local=$(cat /etc/s-box/cfvmadd_local.txt 2>/dev/null)
-else
-if [[ "$tls" = "false" ]]; then
-if [[ -f /etc/s-box/cfymjx.txt ]]; then
-vm_name=$(cat /etc/s-box/cfymjx.txt 2>/dev/null)
-else
-vm_name=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.server_name')
-fi
-vmadd_local=$server_ipcl
-vmadd_are_local=$server_ip
-else
-vmadd_local=$vm_name
-vmadd_are_local=$vm_name
-fi
-fi
-if [[ -f /etc/s-box/cfvmadd_argo.txt ]]; then
-vmadd_argo=$(cat /etc/s-box/cfvmadd_argo.txt 2>/dev/null)
-else
-vmadd_argo=www.visa.com.sg
-fi
-hy2_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].listen_port')
-hy2_ports=$(iptables -t nat -nL --line 2>/dev/null | grep -w "$hy2_port" | awk '{print $8}' | sed 's/dpts://; s/dpt://' | tr '\n' ',' | sed 's/,$//')
-if [[ -n $hy2_ports ]]; then
-hy2ports=$(echo $hy2_ports | sed 's/:/-/g')
-hyps=$hy2_port,$hy2ports
-else
-hyps=
-fi
-ym=$(cat /root/ygkkkca/ca.log 2>/dev/null)
-hy2_sniname=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].tls.key_path')
-if [[ "$hy2_sniname" = '/etc/s-box/private.key' ]]; then
-hy2_name=www.bing.com
-sb_hy2_ip=$server_ip
-cl_hy2_ip=$server_ipcl
-ins_hy2=1
-hy2_ins=true
-else
-hy2_name=$ym
-sb_hy2_ip=$ym
-cl_hy2_ip=$ym
-ins_hy2=0
-hy2_ins=false
-fi
-tu5_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].listen_port')
-ym=$(cat /root/ygkkkca/ca.log 2>/dev/null)
-tu5_sniname=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].tls.key_path')
-if [[ "$tu5_sniname" = '/etc/s-box/private.key' ]]; then
-tu5_name=www.bing.com
-sb_tu5_ip=$server_ip
-cl_tu5_ip=$server_ipcl
-ins=1
-tu5_ins=true
-else
-tu5_name=$ym
-sb_tu5_ip=$ym
-cl_tu5_ip=$ym
-ins=0
-tu5_ins=false
-fi
-}
-
-resvless(){
-echo
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-vl_link="vless://$uuid@$server_ip:$vl_port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$vl_name&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp&headerType=none#vl-reality-$hostname"
-echo "$vl_link" > /etc/s-box/vl_reality.txt
-red "🚀 Информация об узле 【 vless-reality-vision 】:" && sleep 2
-echo
-echo "Ссылка для импорта (v2rayN с ядром sing-box, Nekobox, Shadowrocket):"
-echo -e "${yellow}$vl_link${plain}"
-echo
-echo "QR-код (v2rayN, Nekobox, Shadowrocket):"
-qrencode -o - -t ANSIUTF8 "$(cat /etc/s-box/vl_reality.txt)"
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo
-}
-
-resvmess(){
-if [[ "$tls" = "false" ]]; then
-argopid
-if [[ -n $(ps -e | grep -w $ls 2>/dev/null) ]]; then
-echo
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-red "🚀 Информация о временном узле 【 vmess-ws(tls)+Argo 】 (можно использовать 3-8-3 для настройки CDN):" && sleep 2
-echo
-echo "Ссылка для импорта (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo -e "${yellow}vmess://$(echo '{"add":"'$vmadd_argo'","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$ws_path'","port":"8443","ps":"'vm-argo-$hostname'","tls":"tls","sni":"'$argo'","type":"none","v":"2"}' | base64 -w 0)${plain}"
-echo
-echo "QR-код (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo 'vmess://'$(echo '{"add":"'$vmadd_argo'","aid":"0","host":"'$argo'","id":"'$uuid'","net":"ws","path":"'$ws_path'","port":"8443","ps":"'vm-argo-$hostname'","tls":"tls","sni":"'$argo'","type":"none","v":"2"}' | base64 -w 0) > /etc/s-box/vm_ws_argols.txt
-qrencode -o - -t ANSIUTF8 "$(cat /etc/s-box/vm_ws_argols.txt)"
-fi
-if [[ -n $(ps -e | grep -w $ym 2>/dev/null) ]]; then
-argogd=$(cat /etc/s-box/sbargoym.log 2>/dev/null)
-echo
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-red "🚀 Информация о постоянном узле 【 vmess-ws(tls)+Argo 】 (можно использовать 3-8-3 для настройки CDN):" && sleep 2
-echo
-echo "Ссылка для импорта (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo -e "${yellow}vmess://$(echo '{"add":"'$vmadd_argo'","aid":"0","host":"'$argogd'","id":"'$uuid'","net":"ws","path":"'$ws_path'","port":"8443","ps":"'vm-argo-$hostname'","tls":"tls","sni":"'$argogd'","type":"none","v":"2"}' | base64 -w 0)${plain}"
-echo
-echo "QR-код (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo 'vmess://'$(echo '{"add":"'$vmadd_argo'","aid":"0","host":"'$argogd'","id":"'$uuid'","net":"ws","path":"'$ws_path'","port":"8443","ps":"'vm-argo-$hostname'","tls":"tls","sni":"'$argogd'","type":"none","v":"2"}' | base64 -w 0) > /etc/s-box/vm_ws_argogd.txt
-qrencode -o - -t ANSIUTF8 "$(cat /etc/s-box/vm_ws_argogd.txt)"
-fi
-echo
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-red "🚀 Информация об узле 【 vmess-ws 】 (рекомендуется 3-8-1 для настройки Cloudflare):" && sleep 2
-echo
-echo "Ссылка для импорта (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo -e "${yellow}vmess://$(echo '{"add":"'$vmadd_are_local'","aid":"0","host":"'$vm_name'","id":"'$uuid'","net":"ws","path":"'$ws_path'","port":"'$vm_port'","ps":"'vm-ws-$hostname'","tls":"","type":"none","v":"2"}' | base64 -w 0)${plain}"
-echo
-echo "QR-код (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo 'vmess://'$(echo '{"add":"'$vmadd_are_local'","aid":"0","host":"'$vm_name'","id":"'$uuid'","net":"ws","path":"'$ws_path'","port":"'$vm_port'","ps":"'vm-ws-$hostname'","tls":"","type":"none","v":"2"}' | base64 -w 0) > /etc/s-box/vm_ws.txt
-qrencode -o - -t ANSIUTF8 "$(cat /etc/s-box/vm_ws.txt)"
-else
-echo
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-red "🚀 Информация об узле 【 vmess-ws-tls 】 (рекомендуется 3-8-1 для настройки Cloudflare):" && sleep 2
-echo
-echo "Ссылка для импорта (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo -e "${yellow}vmess://$(echo '{"add":"'$vmadd_are_local'","aid":"0","host":"'$vm_name'","id":"'$uuid'","net":"ws","path":"'$ws_path'","port":"'$vm_port'","ps":"'vm-ws-tls-$hostname'","tls":"tls","sni":"'$vm_name'","type":"none","v":"2"}' | base64 -w 0)${plain}"
-echo
-echo "QR-код (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo 'vmess://'$(echo '{"add":"'$vmadd_are_local'","aid":"0","host":"'$vm_name'","id":"'$uuid'","net":"ws","path":"'$ws_path'","port":"'$vm_port'","ps":"'vm-ws-tls-$hostname'","tls":"tls","sni":"'$vm_name'","type":"none","v":"2"}' | base64 -w 0) > /etc/s-box/vm_ws_tls.txt
-qrencode -o - -t ANSIUTF8 "$(cat /etc/s-box/vm_ws_tls.txt)"
-fi
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo
-}
-
-reshy2(){
-echo
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-hy2_link="hysteria2://$uuid@$sb_hy2_ip:$hy2_port?security=tls&alpn=h3&insecure=$ins_hy2&sni=$hy2_name#hy2-$hostname"
-echo "$hy2_link" > /etc/s-box/hy2.txt
-red "🚀 Информация об узле 【 Hysteria-2 】:" && sleep 2
-echo
-echo "Ссылка для импорта (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-echo -e "${yellow}$hy2_link${plain}"
-echo
-echo "QR-код (v2rayN, v2rayNG, Nekobox, Shadowrocket):"
-qrencode -o - -t ANSIUTF8 "$(cat /etc/s-box/hy2.txt)"
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo
-}
-
-restu5(){
-echo
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-tuic5_link="tuic://$uuid:$uuid@$sb_tu5_ip:$tu5_port?congestion_control=bbr&udp_relay_mode=native&alpn=h3&sni=$tu5_name&allow_insecure=$ins&allowInsecure=$ins#tu5-$hostname"
-echo "$tuic5_link" > /etc/s-box/tuic5.txt
-red "🚀 Информация об узле 【 Tuic-v5 】:" && sleep 2
-echo
-echo "Ссылка для импорта (v2rayN, Nekobox, Shadowrocket):"
-echo -e "${yellow}$tuic5_link${plain}"
-echo
-echo "QR-код (v2rayN, Nekobox, Shadowrocket):"
-qrencode -o - -t ANSIUTF8 "$(cat /etc/s-box/tuic5.txt)"
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo
-}
-
-sb_client(){
-tls=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.enabled')
-argopid
-if [[ -n $(ps -e | grep -w $ym 2>/dev/null) && -n $(ps -e | grep -w $ls 2>/dev/null) && "$tls" = "false" ]]; then
-cat > /etc/s-box/sing_box_client.json <<EOF
-{
-  "log": {
-    "disabled": false,
-    "level": "info",
-    "timestamp": true
-  },
-  "experimental": {
-    "clash_api": {
-      "external_controller": "127.0.0.1:9090",
-      "external_ui": "ui",
-      "external_ui_download_url": "",
-      "external_ui_download_detour": "",
-      "secret": "",
-      "default_mode": "Rule"
-        },
-      "cache_file": {
-            "enabled": true,
-            "path": "cache.db",
-            "store_fakeip": true
-        }
-    },
-    "dns": {
-        "servers": [
-            {
-                "tag": "proxydns",
-                "address": "$sbdnsip",
-                "detour": "select"
-            },
-            {
-                "tag": "localdns",
-                "address": "h3://223.5.5.5/dns-query",
-                "detour": "direct"
-            },
-            {
-                "tag": "dns_fakeip",
-                "address": "fakeip"
-            }
-        ],
-        "rules": [
-            {
-                "outbound": "any",
-                "server": "localdns",
-                "disable_cache": true
-            },
-            {
-                "clash_mode": "Global",
-                "server": "proxydns"
-            },
-            {
-                "clash_mode": "Direct",
-                "server": "localdns"
-            },
-            {
-                "rule_set": "geosite-cn",
-                "server": "localdns"
-            },
-            {
-                "rule_set": "geosite-geolocation-!cn",
-                "server": "proxydns"
-            },
-            {
-                "rule_set": "geosite-geolocation-!cn",         
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
-                "server": "dns_fakeip"
-            }
-          ],
-           "fakeip": {
-           "enabled": true,
-           "inet4_range": "198.18.0.0/15",
-           "inet6_range": "fc00::/18"
-         },
-          "independent_cache": true,
-          "final": "proxydns"
-        },
-      "inbounds": [
-    {
-      "type": "tun",
-           "tag": "tun-in",
-      "address": [
-      "172.19.0.1/30",
-      "fd00::1/126"
-      ],
-      "auto_route": true,
-      "strict_route": true,
-      "sniff": true,
-      "sniff_override_destination": true,
-      "domain_strategy": "prefer_ipv4"
-    }
-  ],
-  "outbounds": [
-    {
-      "tag": "select",
-      "type": "selector",
-      "default": "auto",
-      "outbounds": [
-        "auto",
-        "vless-$hostname",
-        "vmess-$hostname",
-        "hy2-$hostname",
-        "tuic5-$hostname",
-"vmess-tls-argo-fixed-$hostname",
-"vmess-argo-fixed-$hostname",
-"vmess-tls-argo-temp-$hostname",
-"vmess-argo-temp-$hostname"
-      ]
-    },
-    {
-      "type": "vless",
-      "tag": "vless-$hostname",
-      "server": "$server_ipcl",
-      "server_port": $vl_port,
-      "uuid": "$uuid",
-      "flow": "xtls-rprx-vision",
-      "tls": {
-        "enabled": true,
-        "server_name": "$vl_name",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-      "reality": {
-          "enabled": true,
-          "public_key": "$public_key",
-          "short_id": "$short_id"
-        }
-      }
-    },
-{
-            "server": "$vmadd_local",
-            "server_port": $vm_port,
-            "tag": "vmess-$hostname",
-            "tls": {
-                "enabled": $tls,
-                "server_name": "$vm_name",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$vm_name"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-
-    {
-        "type": "hysteria2",
-        "tag": "hy2-$hostname",
-        "server": "$cl_hy2_ip",
-        "server_port": $hy2_port,
-        "password": "$uuid",
-        "tls": {
-            "enabled": true,
-            "server_name": "$hy2_name",
-            "insecure": $hy2_ins,
-            "alpn": [
-                "h3"
-            ]
-        }
-    },
-        {
-            "type":"tuic",
-            "tag": "tuic5-$hostname",
-            "server": "$cl_tu5_ip",
-            "server_port": $tu5_port,
-            "uuid": "$uuid",
-            "password": "$uuid",
-            "congestion_control": "bbr",
-            "udp_relay_mode": "native",
-            "udp_over_stream": false,
-            "zero_rtt_handshake": false,
-            "heartbeat": "10s",
-            "tls":{
-                "enabled": true,
-                "server_name": "$tu5_name",
-                "insecure": $tu5_ins,
-                "alpn": [
-                    "h3"
-                ]
-            }
-        },
-{
-            "server": "$vmadd_argo",
-            "server_port": 8443,
-            "tag": "vmess-tls-argo-fixed-$hostname",
-            "tls": {
-                "enabled": true,
-                "server_name": "$argogd",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$argogd"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-{
-            "server": "$vmadd_argo",
-            "server_port": 8880,
-            "tag": "vmess-argo-fixed-$hostname",
-            "tls": {
-                "enabled": false,
-                "server_name": "$argogd",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$argogd"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-{
-            "server": "$vmadd_argo",
-            "server_port": 8443,
-            "tag": "vmess-tls-argo-temp-$hostname",
-            "tls": {
-                "enabled": true,
-                "server_name": "$argo",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$argo"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-{
-            "server": "$vmadd_argo",
-            "server_port": 8880,
-            "tag": "vmess-argo-temp-$hostname",
-            "tls": {
-                "enabled": false,
-                "server_name": "$argo",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$argo"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-    {
-      "tag": "direct",
-      "type": "direct"
-    },
-    {
-      "tag": "auto",
-      "type": "urltest",
-      "outbounds": [
-        "vless-$hostname",
-        "vmess-$hostname",
-        "hy2-$hostname",
-        "tuic5-$hostname",
-"vmess-tls-argo-fixed-$hostname",
-"vmess-argo-fixed-$hostname",
-"vmess-tls-argo-temp-$hostname",
-"vmess-argo-temp-$hostname"
-      ],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "1m",
-      "tolerance": 50,
-      "interrupt_exist_connections": false
-    }
-  ],
-  "route": {
-      "rule_set": [
-            {
-                "tag": "geosite-geolocation-!cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            },
-            {
-                "tag": "geosite-cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            },
-            {
-                "tag": "geoip-cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            }
-        ],
-    "auto_detect_interface": true,
-    "final": "select",
-    "rules": [
-      {
-      "inbound": "tun-in",
-      "action": "sniff"
-      },
-      {
-      "protocol": "dns",
-      "action": "hijack-dns"
-      },
-      {
-      "port": 443,
-      "network": "udp",
-      "action": "reject"
-      },
-      {
-        "clash_mode": "Direct",
-        "outbound": "direct"
-      },
-      {
-        "clash_mode": "Global",
-        "outbound": "select"
-      },
-      {
-        "rule_set": "geoip-cn",
-        "outbound": "direct"
-      },
-      {
-        "rule_set": "geosite-cn",
-        "outbound": "direct"
-      },
-      {
-      "ip_is_private": true,
-      "outbound": "direct"
-      },
-      {
-        "rule_set": "geosite-geolocation-!cn",
-        "outbound": "select"
-      }
-    ]
-  },
-    "ntp": {
-    "enabled": true,
-    "server": "time.apple.com",
-    "server_port": 123,
-    "interval": "30m",
-    "detour": "direct"
-  }
-}
-EOF
-
-cat > /etc/s-box/clash_meta_client.yaml <<EOF
-port: 7890
-allow-lan: true
-mode: rule
-log-level: info
-unified-delay: true
-global-client-fingerprint: chrome
-dns:
-  enable: false
-  listen: :53
-  ipv6: true
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
-  default-nameserver: 
-    - 223.5.5.5
-    - 8.8.8.8
-  nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  fallback:
-    - https://1.0.0.1/dns-query
-    - tls://dns.google
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-    ipcidr:
-      - 240.0.0.0/4
-
-proxies:
-- name: vless-reality-vision-$hostname               
-  type: vless
-  server: $server_ipcl                               
-  port: $vl_port                                                
-  uuid: $uuid   
-  network: tcp
-  udp: true
-  tls: true
-  flow: xtls-rprx-vision
-  servername: $vl_name                 
-  reality-opts: 
-    public-key: $public_key    
-    short-id: $short_id                      
-  client-fingerprint: chrome                  
-
-- name: vmess-ws-$hostname                         
-  type: vmess
-  server: $vmadd_local                        
-  port: $vm_port                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: $tls
-  network: ws
-  servername: $vm_name                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $vm_name                     
-
-- name: hysteria2-$hostname                            
-  type: hysteria2                                      
-  server: $cl_hy2_ip                               
-  port: $hy2_port                                
-  password: $uuid                          
-  alpn:
-    - h3
-  sni: $hy2_name                               
-  skip-cert-verify: $hy2_ins
-  fast-open: true
-
-- name: tuic5-$hostname                            
-  server: $cl_tu5_ip                      
-  port: $tu5_port                                    
-  type: tuic
-  uuid: $uuid       
-  password: $uuid   
-  alpn: [h3]
-  disable-sni: true
-  reduce-rtt: true
-  udp-relay-mode: native
-  congestion-controller: bbr
-  sni: $tu5_name                                
-  skip-cert-verify: $tu5_ins
-
-- name: vmess-tls-argo-fixed-$hostname                         
-  type: vmess
-  server: $vmadd_argo                        
-  port: 8443                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: true
-  network: ws
-  servername: $argogd                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $argogd
-
-
-- name: vmess-argo-fixed-$hostname                         
-  type: vmess
-  server: $vmadd_argo                        
-  port: 8880                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: false
-  network: ws
-  servername: $argogd                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $argogd
-
-- name: vmess-tls-argo-temp-$hostname                         
-  type: vmess
-  server: $vmadd_argo                        
-  port: 8443                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: true
-  network: ws
-  servername: $argo                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $argo
-
-- name: vmess-argo-temp-$hostname                         
-  type: vmess
-  server: $vmadd_argo                        
-  port: 8880                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: false
-  network: ws
-  servername: $argo                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $argo 
-
-proxy-groups:
-- name: Балансировка
-  type: load-balance
-  url: https://www.gstatic.com/generate_204
-  interval: 300
-  strategy: round-robin
-  proxies:
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-    - vmess-tls-argo-fixed-$hostname
-    - vmess-argo-fixed-$hostname
-    - vmess-tls-argo-temp-$hostname
-    - vmess-argo-temp-$hostname
-
-- name: Авто-выбор
-  type: url-test
-  url: https://www.gstatic.com/generate_204
-  interval: 300
-  tolerance: 50
-  proxies:
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-    - vmess-tls-argo-fixed-$hostname
-    - vmess-argo-fixed-$hostname
-    - vmess-tls-argo-temp-$hostname
-    - vmess-argo-temp-$hostname
-    
-- name: 🌍 Выбор узла прокси
-  type: select
-  proxies:
-    - Балансировка                                         
-    - Авто-выбор
-    - DIRECT
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-    - vmess-tls-argo-fixed-$hostname
-    - vmess-argo-fixed-$hostname
-    - vmess-tls-argo-temp-$hostname
-    - vmess-argo-temp-$hostname
-rules:
-  - GEOIP,LAN,DIRECT
-  - GEOIP,CN,DIRECT
-  - MATCH,🌍 Выбор узла прокси
-EOF
-elif [[ ! -n $(ps -e | grep -w $ym 2>/dev/null) && -n $(ps -e | grep -w $ls 2>/dev/null) && "$tls" = "false" ]]; then
-cat > /etc/s-box/sing_box_client.json <<EOF
-{
-  "log": {
-    "disabled": false,
-    "level": "info",
-    "timestamp": true
-  },
-  "experimental": {
-    "clash_api": {
-      "external_controller": "127.0.0.1:9090",
-      "external_ui": "ui",
-      "external_ui_download_url": "",
-      "external_ui_download_detour": "",
-      "secret": "",
-      "default_mode": "Rule"
-       },
-      "cache_file": {
-            "enabled": true,
-            "path": "cache.db",
-            "store_fakeip": true
-        }
-    },
-    "dns": {
-        "servers": [
-            {
-                "tag": "proxydns",
-                "address": "$sbdnsip",
-                "detour": "select"
-            },
-            {
-                "tag": "localdns",
-                "address": "h3://223.5.5.5/dns-query",
-                "detour": "direct"
-            },
-            {
-                "tag": "dns_fakeip",
-                "address": "fakeip"
-            }
-        ],
-        "rules": [
-            {
-                "outbound": "any",
-                "server": "localdns",
-                "disable_cache": true
-            },
-            {
-                "clash_mode": "Global",
-                "server": "proxydns"
-            },
-            {
-                "clash_mode": "Direct",
-                "server": "localdns"
-            },
-            {
-                "rule_set": "geosite-cn",
-                "server": "localdns"
-            },
-            {
-                 "rule_set": "geosite-geolocation-!cn",
-                 "server": "proxydns"
-            },
-             {
-                "rule_set": "geosite-geolocation-!cn",         
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
-                "server": "dns_fakeip"
-            }
-          ],
-           "fakeip": {
-           "enabled": true,
-           "inet4_range": "198.18.0.0/15",
-           "inet6_range": "fc00::/18"
-         },
-          "independent_cache": true,
-          "final": "proxydns"
-        },
-      "inbounds": [
-    {
-      "type": "tun",
-           "tag": "tun-in",
-      "address": [
-      "172.19.0.1/30",
-      "fd00::1/126"
-      ],
-      "auto_route": true,
-      "strict_route": true,
-      "sniff": true,
-      "sniff_override_destination": true,
-      "domain_strategy": "prefer_ipv4"
-    }
-  ],
-  "outbounds": [
-    {
-      "tag": "select",
-      "type": "selector",
-      "default": "auto",
-      "outbounds": [
-        "auto",
-        "vless-$hostname",
-        "vmess-$hostname",
-        "hy2-$hostname",
-        "tuic5-$hostname",
-"vmess-tls-argo-temp-$hostname",
-"vmess-argo-temp-$hostname"
-      ]
-    },
-    {
-      "type": "vless",
-      "tag": "vless-$hostname",
-      "server": "$server_ipcl",
-      "server_port": $vl_port,
-      "uuid": "$uuid",
-      "flow": "xtls-rprx-vision",
-      "tls": {
-        "enabled": true,
-        "server_name": "$vl_name",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-      "reality": {
-          "enabled": true,
-          "public_key": "$public_key",
-          "short_id": "$short_id"
-        }
-      }
-    },
-{
-            "server": "$vmadd_local",
-            "server_port": $vm_port,
-            "tag": "vmess-$hostname",
-            "tls": {
-                "enabled": $tls,
-                "server_name": "$vm_name",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$vm_name"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-
-    {
-        "type": "hysteria2",
-        "tag": "hy2-$hostname",
-        "server": "$cl_hy2_ip",
-        "server_port": $hy2_port,
-        "password": "$uuid",
-        "tls": {
-            "enabled": true,
-            "server_name": "$hy2_name",
-            "insecure": $hy2_ins,
-            "alpn": [
-                "h3"
-            ]
-        }
-    },
-        {
-            "type":"tuic",
-            "tag": "tuic5-$hostname",
-            "server": "$cl_tu5_ip",
-            "server_port": $tu5_port,
-            "uuid": "$uuid",
-            "password": "$uuid",
-            "congestion_control": "bbr",
-            "udp_relay_mode": "native",
-            "udp_over_stream": false,
-            "zero_rtt_handshake": false,
-            "heartbeat": "10s",
-            "tls":{
-                "enabled": true,
-                "server_name": "$tu5_name",
-                "insecure": $tu5_ins,
-                "alpn": [
-                    "h3"
-                ]
-            }
-        },
-{
-            "server": "$vmadd_argo",
-            "server_port": 8443,
-            "tag": "vmess-tls-argo-temp-$hostname",
-            "tls": {
-                "enabled": true,
-                "server_name": "$argo",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$argo"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-{
-            "server": "$vmadd_argo",
-            "server_port": 8880,
-            "tag": "vmess-argo-temp-$hostname",
-            "tls": {
-                "enabled": false,
-                "server_name": "$argo",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$argo"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-    {
-      "tag": "direct",
-      "type": "direct"
-    },
-    {
-      "tag": "auto",
-      "type": "urltest",
-      "outbounds": [
-        "vless-$hostname",
-        "vmess-$hostname",
-        "hy2-$hostname",
-        "tuic5-$hostname",
-"vmess-tls-argo-temp-$hostname",
-"vmess-argo-temp-$hostname"
-      ],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "1m",
-      "tolerance": 50,
-      "interrupt_exist_connections": false
-    }
-  ],
-  "route": {
-      "rule_set": [
-            {
-                "tag": "geosite-geolocation-!cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            },
-            {
-                "tag": "geosite-cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            },
-            {
-                "tag": "geoip-cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            }
-        ],
-    "auto_detect_interface": true,
-    "final": "select",
-    "rules": [
-      {
-      "inbound": "tun-in",
-      "action": "sniff"
-      },
-      {
-      "protocol": "dns",
-      "action": "hijack-dns"
-      },
-      {
-      "port": 443,
-      "network": "udp",
-      "action": "reject"
-      },
-      {
-        "clash_mode": "Direct",
-        "outbound": "direct"
-      },
-      {
-        "clash_mode": "Global",
-        "outbound": "select"
-      },
-      {
-        "rule_set": "geoip-cn",
-        "outbound": "direct"
-      },
-      {
-        "rule_set": "geosite-cn",
-        "outbound": "direct"
-      },
-      {
-      "ip_is_private": true,
-      "outbound": "direct"
-      },
-      {
-        "rule_set": "geosite-geolocation-!cn",
-        "outbound": "select"
-      }
-    ]
-  },
-    "ntp": {
-    "enabled": true,
-    "server": "time.apple.com",
-    "server_port": 123,
-    "interval": "30m",
-    "detour": "direct"
-  }
-}
-EOF
-
-cat > /etc/s-box/clash_meta_client.yaml <<EOF
-port: 7890
-allow-lan: true
-mode: rule
-log-level: info
-unified-delay: true
-global-client-fingerprint: chrome
-dns:
-  enable: false
-  listen: :53
-  ipv6: true
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
-  default-nameserver: 
-    - 223.5.5.5
-    - 8.8.8.8
-  nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  fallback:
-    - https://1.0.0.1/dns-query
-    - tls://dns.google
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-    ipcidr:
-      - 240.0.0.0/4
-
-proxies:
-- name: vless-reality-vision-$hostname               
-  type: vless
-  server: $server_ipcl                               
-  port: $vl_port                                                
-  uuid: $uuid   
-  network: tcp
-  udp: true
-  tls: true
-  flow: xtls-rprx-vision
-  servername: $vl_name                 
-  reality-opts: 
-    public-key: $public_key    
-    short-id: $short_id                      
-  client-fingerprint: chrome                  
-
-- name: vmess-ws-$hostname                         
-  type: vmess
-  server: $vmadd_local                        
-  port: $vm_port                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: $tls
-  network: ws
-  servername: $vm_name                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $vm_name                     
-
-- name: hysteria2-$hostname                            
-  type: hysteria2                                      
-  server: $cl_hy2_ip                               
-  port: $hy2_port                                
-  password: $uuid                          
-  alpn:
-    - h3
-  sni: $hy2_name                               
-  skip-cert-verify: $hy2_ins
-  fast-open: true
-
-- name: tuic5-$hostname                            
-  server: $cl_tu5_ip                      
-  port: $tu5_port                                    
-  type: tuic
-  uuid: $uuid       
-  password: $uuid   
-  alpn: [h3]
-  disable-sni: true
-  reduce-rtt: true
-  udp-relay-mode: native
-  congestion-controller: bbr
-  sni: $tu5_name                                
-  skip-cert-verify: $tu5_ins
-
-- name: vmess-tls-argo-temp-$hostname                         
-  type: vmess
-  server: $vmadd_argo                        
-  port: 8443                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: true
-  network: ws
-  servername: $argo                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $argo
-
-- name: vmess-argo-temp-$hostname                         
-  type: vmess
-  server: $vmadd_argo                        
-  port: 8880                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: false
-  network: ws
-  servername: $argo                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $argo 
-
-proxy-groups:
-- name: Балансировка
-  type: load-balance
-  url: https://www.gstatic.com/generate_204
-  interval: 300
-  strategy: round-robin
-  proxies:
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-    - vmess-tls-argo-temp-$hostname
-    - vmess-argo-temp-$hostname
-
-- name: Авто-выбор
-  type: url-test
-  url: https://www.gstatic.com/generate_204
-  interval: 300
-  tolerance: 50
-  proxies:
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-    - vmess-tls-argo-temp-$hostname
-    - vmess-argo-temp-$hostname
-    
-- name: 🌍 Выбор узла прокси
-  type: select
-  proxies:
-    - Балансировка                                         
-    - Авто-выбор
-    - DIRECT
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-    - vmess-tls-argo-temp-$hostname
-    - vmess-argo-temp-$hostname
-rules:
-  - GEOIP,LAN,DIRECT
-  - GEOIP,CN,DIRECT
-  - MATCH,🌍 Выбор узла прокси
-EOF
-
-elif [[ -n $(ps -e | grep -w $ym 2>/dev/null) && ! -n $(ps -e | grep -w $ls 2>/dev/null) && "$tls" = "false" ]]; then
-cat > /etc/s-box/sing_box_client.json <<EOF
-{
-  "log": {
-    "disabled": false,
-    "level": "info",
-    "timestamp": true
-  },
-  "experimental": {
-    "clash_api": {
-      "external_controller": "127.0.0.1:9090",
-      "external_ui": "ui",
-      "external_ui_download_url": "",
-      "external_ui_download_detour": "",
-      "secret": "",
-      "default_mode": "Rule"
-       },
-      "cache_file": {
-            "enabled": true,
-            "path": "cache.db",
-            "store_fakeip": true
-        }
-    },
-    "dns": {
-        "servers": [
-            {
-                "tag": "proxydns",
-                "address": "$sbdnsip",
-                "detour": "select"
-            },
-            {
-                "tag": "localdns",
-                "address": "h3://223.5.5.5/dns-query",
-                "detour": "direct"
-            },
-            {
-                "tag": "dns_fakeip",
-                "address": "fakeip"
-            }
-        ],
-        "rules": [
-            {
-                "outbound": "any",
-                "server": "localdns",
-                "disable_cache": true
-            },
-            {
-                "clash_mode": "Global",
-                "server": "proxydns"
-            },
-            {
-                "clash_mode": "Direct",
-                "server": "localdns"
-            },
-            {
-                "rule_set": "geosite-cn",
-                "server": "localdns"
-            },
-            {
-                 "rule_set": "geosite-geolocation-!cn",
-                 "server": "proxydns"
-            },
-             {
-                "rule_set": "geosite-geolocation-!cn",         
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
-                "server": "dns_fakeip"
-            }
-          ],
-           "fakeip": {
-           "enabled": true,
-           "inet4_range": "198.18.0.0/15",
-           "inet6_range": "fc00::/18"
-         },
-          "independent_cache": true,
-          "final": "proxydns"
-        },
-      "inbounds": [
-    {
-      "type": "tun",
-     "tag": "tun-in",
-      "address": [
-      "172.19.0.1/30",
-      "fd00::1/126"
-      ],
-      "auto_route": true,
-      "strict_route": true,
-      "sniff": true,
-      "sniff_override_destination": true,
-      "domain_strategy": "prefer_ipv4"
-    }
-  ],
-  "outbounds": [
-    {
-      "tag": "select",
-      "type": "selector",
-      "default": "auto",
-      "outbounds": [
-        "auto",
-        "vless-$hostname",
-        "vmess-$hostname",
-        "hy2-$hostname",
-        "tuic5-$hostname",
-"vmess-tls-argo-fixed-$hostname",
-"vmess-argo-fixed-$hostname"
-      ]
-    },
-    {
-      "type": "vless",
-      "tag": "vless-$hostname",
-      "server": "$server_ipcl",
-      "server_port": $vl_port,
-      "uuid": "$uuid",
-      "flow": "xtls-rprx-vision",
-      "tls": {
-        "enabled": true,
-        "server_name": "$vl_name",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-      "reality": {
-          "enabled": true,
-          "public_key": "$public_key",
-          "short_id": "$short_id"
-        }
-      }
-    },
-{
-            "server": "$vmadd_local",
-            "server_port": $vm_port,
-            "tag": "vmess-$hostname",
-            "tls": {
-                "enabled": $tls,
-                "server_name": "$vm_name",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$vm_name"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-
-    {
-        "type": "hysteria2",
-        "tag": "hy2-$hostname",
-        "server": "$cl_hy2_ip",
-        "server_port": $hy2_port,
-        "password": "$uuid",
-        "tls": {
-            "enabled": true,
-            "server_name": "$hy2_name",
-            "insecure": $hy2_ins,
-            "alpn": [
-                "h3"
-            ]
-        }
-    },
-        {
-            "type":"tuic",
-            "tag": "tuic5-$hostname",
-            "server": "$cl_tu5_ip",
-            "server_port": $tu5_port,
-            "uuid": "$uuid",
-            "password": "$uuid",
-            "congestion_control": "bbr",
-            "udp_relay_mode": "native",
-            "udp_over_stream": false,
-            "zero_rtt_handshake": false,
-            "heartbeat": "10s",
-            "tls":{
-                "enabled": true,
-                "server_name": "$tu5_name",
-                "insecure": $tu5_ins,
-                "alpn": [
-                    "h3"
-                ]
-            }
-        },
-{
-            "server": "$vmadd_argo",
-            "server_port": 8443,
-            "tag": "vmess-tls-argo-fixed-$hostname",
-            "tls": {
-                "enabled": true,
-                "server_name": "$argogd",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$argogd"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-{
-            "server": "$vmadd_argo",
-            "server_port": 8880,
-            "tag": "vmess-argo-fixed-$hostname",
-            "tls": {
-                "enabled": false,
-                "server_name": "$argogd",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$argogd"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-    {
-      "tag": "direct",
-      "type": "direct"
-    },
-    {
-      "tag": "auto",
-      "type": "urltest",
-      "outbounds": [
-        "vless-$hostname",
-        "vmess-$hostname",
-        "hy2-$hostname",
-        "tuic5-$hostname",
-"vmess-tls-argo-fixed-$hostname",
-"vmess-argo-fixed-$hostname"
-      ],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "1m",
-      "tolerance": 50,
-      "interrupt_exist_connections": false
-    }
-
-	"independent_cache": true,
-          "final": "proxydns"
-        },
-      "inbounds": [
-    {
-      "type": "tun",
-     "tag": "tun-in",
-      "address": [
-      "172.19.0.1/30",
-      "fd00::1/126"
-      ],
-      "auto_route": true,
-      "strict_route": true,
-      "sniff": true,
-      "sniff_override_destination": true,
-      "domain_strategy": "prefer_ipv4"
-    }
-  ],
-  "outbounds": [
-    {
-      "tag": "select",
-      "type": "selector",
-      "default": "auto",
-      "outbounds": [
-        "auto",
-        "vless-$hostname",
-        "vmess-$hostname",
-        "hy2-$hostname",
-        "tuic5-$hostname"
-      ]
-    },
-    {
-      "type": "vless",
-      "tag": "vless-$hostname",
-      "server": "$server_ipcl",
-      "server_port": $vl_port,
-      "uuid": "$uuid",
-      "flow": "xtls-rprx-vision",
-      "tls": {
-        "enabled": true,
-        "server_name": "$vl_name",
-        "utls": {
-          "enabled": true,
-          "fingerprint": "chrome"
-        },
-      "reality": {
-          "enabled": true,
-          "public_key": "$public_key",
-          "short_id": "$short_id"
-        }
-      }
-    },
-{
-            "server": "$vmadd_local",
-            "server_port": $vm_port,
-            "tag": "vmess-$hostname",
-            "tls": {
-                "enabled": $tls,
-                "server_name": "$vm_name",
-                "insecure": false,
-                "utls": {
-                    "enabled": true,
-                    "fingerprint": "chrome"
-                }
-            },
-            "packet_encoding": "packetaddr",
-            "transport": {
-                "headers": {
-                    "Host": [
-                        "$vm_name"
-                    ]
-                },
-                "path": "$ws_path",
-                "type": "ws"
-            },
-            "type": "vmess",
-            "security": "auto",
-            "uuid": "$uuid"
-        },
-
-    {
-        "type": "hysteria2",
-        "tag": "hy2-$hostname",
-        "server": "$cl_hy2_ip",
-        "server_port": $hy2_port,
-        "password": "$uuid",
-        "tls": {
-            "enabled": true,
-            "server_name": "$hy2_name",
-            "insecure": $hy2_ins,
-            "alpn": [
-                "h3"
-            ]
-        }
-    },
-        {
-            "type":"tuic",
-            "tag": "tuic5-$hostname",
-            "server": "$cl_tu5_ip",
-            "server_port": $tu5_port,
-            "uuid": "$uuid",
-            "password": "$uuid",
-            "congestion_control": "bbr",
-            "udp_relay_mode": "native",
-            "udp_over_stream": false,
-            "zero_rtt_handshake": false,
-            "heartbeat": "10s",
-            "tls":{
-                "enabled": true,
-                "server_name": "$tu5_name",
-                "insecure": $tu5_ins,
-                "alpn": [
-                    "h3"
-                ]
-            }
-        },
-    {
-      "tag": "direct",
-      "type": "direct"
-    },
-    {
-      "tag": "auto",
-      "type": "urltest",
-      "outbounds": [
-        "vless-$hostname",
-        "vmess-$hostname",
-        "hy2-$hostname",
-        "tuic5-$hostname"
-      ],
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": "1m",
-      "tolerance": 50,
-      "interrupt_exist_connections": false
-    }
-  ],
-  "route": {
-      "rule_set": [
-            {
-                "tag": "geosite-geolocation-!cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            },
-            {
-                "tag": "geosite-cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            },
-            {
-                "tag": "geoip-cn",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
-                "download_detour": "select",
-                "update_interval": "1d"
-            }
-        ],
-    "auto_detect_interface": true,
-    "final": "select",
-    "rules": [
-      {
-      "inbound": "tun-in",
-      "action": "sniff"
-      },
-      {
-      "protocol": "dns",
-      "action": "hijack-dns"
-      },
-      {
-      "port": 443,
-      "network": "udp",
-      "action": "reject"
-      },
-      {
-        "clash_mode": "Direct",
-        "outbound": "direct"
-      },
-      {
-        "clash_mode": "Global",
-        "outbound": "select"
-      },
-      {
-        "rule_set": "geoip-cn",
-        "outbound": "direct"
-      },
-      {
-        "rule_set": "geosite-cn",
-        "outbound": "direct"
-      },
-      {
-      "ip_is_private": true,
-      "outbound": "direct"
-      },
-      {
-        "rule_set": "geosite-geolocation-!cn",
-        "outbound": "select"
-      }
-    ]
-  },
-    "ntp": {
-    "enabled": true,
-    "server": "time.apple.com",
-    "server_port": 123,
-    "interval": "30m",
-    "detour": "direct"
-  }
-}
-EOF
-
-cat > /etc/s-box/clash_meta_client.yaml <<EOF
-port: 7890
-allow-lan: true
-mode: rule
-log-level: info
-unified-delay: true
-global-client-fingerprint: chrome
-dns:
-  enable: false
-  listen: :53
-  ipv6: true
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
-  default-nameserver: 
-    - 223.5.5.5
-    - 8.8.8.8
-  nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  fallback:
-    - https://1.0.0.1/dns-query
-    - tls://dns.google
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-    ipcidr:
-      - 240.0.0.0/4
-
-proxies:
-- name: vless-reality-vision-$hostname               
-  type: vless
-  server: $server_ipcl                               
-  port: $vl_port                                                
-  uuid: $uuid   
-  network: tcp
-  udp: true
-  tls: true
-  flow: xtls-rprx-vision
-  servername: $vl_name                 
-  reality-opts: 
-    public-key: $public_key    
-    short-id: $short_id                      
-  client-fingerprint: chrome                  
-
-- name: vmess-ws-$hostname                         
-  type: vmess
-  server: $vmadd_local                        
-  port: $vm_port                                     
-  uuid: $uuid       
-  alterId: 0
-  cipher: auto
-  udp: true
-  tls: $tls
-  network: ws
-  servername: $vm_name                    
-  ws-opts:
-    path: "$ws_path"                             
-    headers:
-      Host: $vm_name                     
-
-- name: hysteria2-$hostname                            
-  type: hysteria2                                      
-  server: $cl_hy2_ip                               
-  port: $hy2_port                                
-  password: $uuid                          
-  alpn:
-    - h3
-  sni: $hy2_name                               
-  skip-cert-verify: $hy2_ins
-  fast-open: true
-
-- name: tuic5-$hostname                            
-  server: $cl_tu5_ip                      
-  port: $tu5_port                                    
-  type: tuic
-  uuid: $uuid       
-  password: $uuid   
-  alpn: [h3]
-  disable-sni: true
-  reduce-rtt: true
-  udp-relay-mode: native
-  congestion-controller: bbr
-  sni: $tu5_name                                
-  skip-cert-verify: $tu5_ins
-
-proxy-groups:
-- name: Балансировка
-  type: load-balance
-  url: https://www.gstatic.com/generate_204
-  interval: 300
-  strategy: round-robin
-  proxies:
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-
-- name: Авто-выбор
-  type: url-test
-  url: https://www.gstatic.com/generate_204
-  interval: 300
-  tolerance: 50
-  proxies:
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-    
-- name: 🌍 Выбор узла прокси
-  type: select
-  proxies:
-    - Балансировка                                         
-    - Авто-выбор
-    - DIRECT
-    - vless-reality-vision-$hostname                               
-    - vmess-ws-$hostname
-    - hysteria2-$hostname
-    - tuic5-$hostname
-rules:
-  - GEOIP,LAN,DIRECT
-  - GEOIP,CN,DIRECT
-  - MATCH,🌍 Выбор узла прокси
-EOF
-fi
-
-cat > /etc/s-box/v2rayn_hy2.yaml <<EOF
-server: $sb_hy2_ip:$hy2_port
-auth: $uuid
-tls:
-  sni: $hy2_name
-  insecure: $hy2_ins
-fastOpen: true
-socks5:
-  listen: 127.0.0.1:50000
-lazy: true
-transport:
-  udp:
-    hopInterval: 30s
-EOF
-
-cat > /etc/s-box/v2rayn_tu5.json <<EOF
-{
-    "relay": {
-        "server": "$sb_tu5_ip:$tu5_port",
-        "uuid": "$uuid",
-        "password": "$uuid",
-        "congestion_control": "bbr",
-        "alpn": ["h3", "spdy/3.1"]
-    },
-    "local": {
-        "server": "127.0.0.1:55555"
-    },
-    "log_level": "info"
-}
-EOF
-if [[ -n $hy2_ports ]]; then
-hy2_ports=",$hy2_ports"
-hy2_ports=$(echo $hy2_ports | sed 's/:/-/g')
-a=$hy2_ports
-sed -i "/server:/ s/$/$a/" /etc/s-box/v2rayn_hy2.yaml
-fi
-sed -i 's/server: \(.*\)/server: "\1"/' /etc/s-box/v2rayn_hy2.yaml
-}
-
-cfargo_ym(){
-tls=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.enabled')
-if [[ "$tls" = "false" ]]; then
-echo
-yellow "1. Временный туннель Argo"
-yellow "2. Фиксированный туннель Argo"
-yellow "0. Назад"
-readp "Пожалуйста, выберите [0-2]: " menu
-if [ "$menu" = "1" ]; then
-cfargo
-elif [ "$menu" = "2" ]; then
-cfargoym
-else
-changeserv
-fi
-else
-yellow "Функция Argo недоступна, так как для Vmess включен TLS" && sleep 2
-fi
-}
-
-cloudflaredargo(){
-if [ ! -e /etc/s-box/cloudflared ]; then
-case $(uname -m) in
-aarch64) cpu=arm64;;
-x86_64) cpu=amd64;;
-esac
-curl -L -o /etc/s-box/cloudflared -# --retry 2 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-$cpu
-#curl -L -o /etc/s-box/cloudflared -# --retry 2 https://gitlab.com/rwkgyg/sing-box-yg/-/raw/main/$cpu
-chmod +x /etc/s-box/cloudflared
-fi
-}
-
-cfargoym(){
-echo
-if [[ -f /etc/s-box/sbargotoken.log && -f /etc/s-box/sbargoym.log ]]; then
-green "Текущий фиксированный домен Argo: $(cat /etc/s-box/sbargoym.log 2>/dev/null)"
-green "Текущий токен Argo: $(cat /etc/s-box/sbargotoken.log 2>/dev/null)"
-fi
-echo
-green "Убедитесь, что туннель настроен в панели Cloudflare: Zero Trust --- Networks --- Tunnels"
-yellow "1. Сбросить/Настроить фиксированный домен Argo"
-yellow "2. Остановить фиксированный туннель Argo"
-yellow "0. Назад"
-readp "Пожалуйста, выберите [0-2]: " menu
-if [ "$menu" = "1" ]; then
-cloudflaredargo
-readp "Введите Token фиксированного туннеля: " argotoken
-readp "Введите домен фиксированного туннеля: " argoym
-if [[ -n $(ps -e | grep cloudflared) ]]; then
-kill -15 $(cat /etc/s-box/sbargoympid.log 2>/dev/null) >/dev/null 2>&1
-fi
-echo
-if [[ -n "${argotoken}" && -n "${argoym}" ]]; then
-nohup setsid /etc/s-box/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token ${argotoken} >/dev/null 2>&1 & echo "$!" > /etc/s-box/sbargoympid.log
-sleep 20
-fi
-echo ${argoym} > /etc/s-box/sbargoym.log
-echo ${argotoken} > /etc/s-box/sbargotoken.log
-crontab -l > /tmp/crontab.tmp
-sed -i '/sbargoympid/d' /tmp/crontab.tmp
-echo '@reboot sleep 10 && /bin/bash -c "nohup setsid /etc/s-box/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat /etc/s-box/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 & pid=\$! && echo \$pid > /etc/s-box/sbargoympid.log"' >> /tmp/crontab.tmp
-crontab /tmp/crontab.tmp
-rm /tmp/crontab.tmp
-argo=$(cat /etc/s-box/sbargoym.log 2>/dev/null)
-blue "Фиксированный туннель Argo настроен. Домен: $argo"
-elif [ "$menu" = "2" ]; then
-kill -15 $(cat /etc/s-box/sbargoympid.log 2>/dev/null) >/dev/null 2>&1
-crontab -l > /tmp/crontab.tmp
-sed -i '/sbargoympid/d' /tmp/crontab.tmp
-crontab /tmp/crontab.tmp
-rm /tmp/crontab.tmp
-rm -rf /etc/s-box/vm_ws_argogd.txt
-green "Фиксированный туннель Argo остановлен"
-else
-cfargo_ym
-fi
-}
-
-cfargo(){
-echo
-yellow "1. Сбросить/Создать временный домен Argo"
-yellow "2. Остановить временный туннель Argo"
-yellow "0. Назад"
-readp "Пожалуйста, выберите [0-2]: " menu
-if [ "$menu" = "1" ]; then
-cloudflaredargo
-i=0
-while [ $i -le 4 ]; do let i++
-yellow "Попытка $i: Проверка валидности временного домена Argo, подождите..."
-if [[ -n $(ps -e | grep cloudflared) ]]; then
-kill -15 $(cat /etc/s-box/sbargopid.log 2>/dev/null) >/dev/null 2>&1
-fi
-nohup setsid /etc/s-box/cloudflared tunnel --url http://localhost:$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].listen_port') --edge-ip-version auto --no-autoupdate --protocol http2 > /etc/s-box/argo.log 2>&1 &
-echo "$!" > /etc/s-box/sbargopid.log
-sleep 20
-if [[ -n $(curl -sL https://$(cat /etc/s-box/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')/ -I | awk 'NR==1 && /404|400|503/') ]]; then
-argo=$(cat /etc/s-box/argo.log 2>/dev/null | grep -a trycloudflare.com | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
-blue "Временный туннель Argo успешно создан: $argo" && sleep 2
-break
-fi
-if [ $i -eq 5 ]; then
-echo
-yellow "Проверка временного домена не удалась. Он может заработать позже или попробуйте еще раз." && sleep 3
-fi
-done
-crontab -l > /tmp/crontab.tmp
-sed -i '/sbargopid/d' /tmp/crontab.tmp
-echo '@reboot sleep 10 && /bin/bash -c "nohup setsid /etc/s-box/cloudflared tunnel --url http://localhost:$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].listen_port') --edge-ip-version auto --no-autoupdate --protocol http2 > /etc/s-box/argo.log 2>&1 & pid=\$! && echo \$pid > /etc/s-box/sbargopid.log"' >> /tmp/crontab.tmp
-crontab /tmp/crontab.tmp
-rm /tmp/crontab.tmp
-elif [ "$menu" = "2" ]; then
-kill -15 $(cat /etc/s-box/sbargopid.log 2>/dev/null) >/dev/null 2>&1
-crontab -l > /tmp/crontab.tmp
-sed -i '/sbargopid/d' /tmp/crontab.tmp
-crontab /tmp/crontab.tmp
-rm /tmp/crontab.tmp
-rm -rf /etc/s-box/vm_ws_argols.txt
-green "Временный туннель Argo остановлен"
-else
-cfargo_ym
-fi
-}
-
-instsllsingbox(){
-if [[ -f '/etc/systemd/system/sing-box.service' ]]; then
-red "Служба Sing-box уже установлена." && exit
-fi
-mkdir -p /etc/s-box
-v6
-openyn
-inssb
-inscertificate
-insport
-sleep 2
-echo
-blue "Генерация Reality ключей и ID..."
-key_pair=$(/etc/s-box/sing-box generate reality-keypair)
-private_key=$(echo "$key_pair" | awk '/PrivateKey/ {print $2}' | tr -d '"')
-public_key=$(echo "$key_pair" | awk '/PublicKey/ {print $2}' | tr -d '"')
-echo "$public_key" > /etc/s-box/public.key
-short_id=$(/etc/s-box/sing-box generate rand --hex 4)
-wget -q -O /root/geoip.db https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.db
-wget -q -O /root/geosite.db https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.db
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-green "Шаг 5. Автоматическое создание аккаунта Warp-Wireguard для исходящего трафика" && sleep 2
-warpwg
-inssbjsonser
-sbservice
-sbactive
-curl -sL https://raw.githubusercontent.com/yonggekkk/sing-box-yg/main/version | awk -F "Обновление" '{print $1}' | head -n 1 > /etc/s-box/v
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-lnsb && blue "Скрипт Sing-box-yg успешно установлен. Ярлык запуска: sb" && cronsb
-echo
-wgcfgo
-sbshare
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-blue "Для получения конфигов Hysteria2/Tuic5, Clash-Meta/Sing-box и ссылок подписки выберите пункт 9"
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-echo
-}
-changeym(){
-[ -f /root/ygkkkca/ca.log ] && ymzs="$yellowПереключиться на доменный сертификат: $(cat /root/ygkkkca/ca.log 2>/dev/null)$plain" || ymzs="$yellowДоменный сертификат не найден$plain"
-vl_na="Используемый домен: $(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].tls.server_name'). $yellowНужен домен, подходящий для Reality (не сертификатный)$plain"
-tls=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.enabled')
-[[ "$tls" = "false" ]] && vm_na="TLS сейчас выключен. $ymzs ${yellow}(При включении TLS Argo станет недоступен)$plain" || vm_na="Используемый сертификат: $(cat /root/ygkkkca/ca.log 2>/dev/null). $yellowВыключить TLS (станет доступен Argo)$plain"
-hy2_sniname=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].tls.key_path')
-[[ "$hy2_sniname" = '/etc/s-box/private.key' ]] && hy2_na="Используется самоподписанный сертификат Bing. $ymzs" || hy2_na="Используется доменный сертификат: $(cat /root/ygkkkca/ca.log 2>/dev/null). $yellowВернуться на сертификат Bing$plain"
-tu5_sniname=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].tls.key_path')
-[[ "$tu5_sniname" = '/etc/s-box/private.key' ]] && tu5_na="Используется самоподписанный сертификат Bing. $ymzs" || tu5_na="Используется доменный сертификат: $(cat /root/ygkkkca/ca.log 2>/dev/null). $yellowВернуться на сертификат Bing$plain"
-echo
-green "Выберите протокол для смены режима сертификата:"
-green "1. Vless-Reality ($vl_na)"
-if [[ -f /root/ygkkkca/ca.log ]]; then
-green "2. Vmess-ws ($vm_na)"
-green "3. Hysteria2 ($hy2_na)"
-green "4. Tuic5 ($tu5_na)"
-else
-red "Доступен только пункт 1. Для остальных сначала выпустите Acme сертификат (пункт 12)."
-fi
-green "0. Назад"
-readp "Пожалуйста, выберите: " menu
-if [ "$menu" = "1" ]; then
-readp "Введите домен для vless-reality (Enter для apple.com): " menu
-ym_vl_re=${menu:-apple.com}
-a=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].tls.server_name')
-b=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].tls.reality.handshake.server')
-echo $sbfiles | xargs -n1 sed -i "23s/$a/$ym_vl_re/"
-echo $sbfiles | xargs -n1 sed -i "27s/$b/$ym_vl_re/"
-restartsb
-blue "Настройка завершена. Обновите конфиги в пункте 9."
-elif [ "$menu" = "2" ]; then
-if [ -f /root/ygkkkca/ca.log ]; then
-a=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.enabled')
-[ "$a" = "true" ] && a_a=false || a_a=true
-b=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.server_name')
-[ "$b" = "www.bing.com" ] && b_b=$(cat /root/ygkkkca/ca.log) || b_b=$(cat /root/ygkkkca/ca.log)
-c=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.certificate_path')
-d=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].tls.key_path')
-if [ "$d" = '/etc/s-box/private.key' ]; then
-c_c='/root/ygkkkca/cert.crt'
-d_d='/root/ygkkkca/private.key'
-else
-c_c='/etc/s-box/cert.pem'
-d_d='/etc/s-box/private.key'
-fi
-echo $sbfiles | xargs -n1 sed -i "55s#$a#$a_a#"
-echo $sbfiles | xargs -n1 sed -i "56s#$b#$b_b#"
-echo $sbfiles | xargs -n1 sed -i "57s#$c#$c_c#"
-echo $sbfiles | xargs -n1 sed -i "58s#$d#$d_d#"
-restartsb
-blue "Настройка завершена. Обновите конфиги в пункте 9."
-else
-red "Сертификат не найден. Используйте пункт 12 для выпуска." && sleep 2 && sb
-fi
-elif [ "$menu" = "3" ]; then
-if [ -f /root/ygkkkca/ca.log ]; then
-c=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].tls.certificate_path')
-d=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].tls.key_path')
-if [ "$d" = '/etc/s-box/private.key' ]; then
-c_c='/root/ygkkkca/cert.crt'
-d_d='/root/ygkkkca/private.key'
-else
-c_c='/etc/s-box/cert.pem'
-d_d='/etc/s-box/private.key'
-fi
-echo $sbfiles | xargs -n1 sed -i "79s#$c#$c_c#"
-echo $sbfiles | xargs -n1 sed -i "80s#$d#$d_d#"
-restartsb
-blue "Настройка завершена. Обновите конфиги в пункте 9."
-else
-red "Сертификат не найден. Используйте пункт 12 для выпуска." && sleep 2 && sb
-fi
-elif [ "$menu" = "4" ]; then
-if [ -f /root/ygkkkca/ca.log ]; then
-c=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].tls.certificate_path')
-d=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].tls.key_path')
-if [ "$d" = '/etc/s-box/private.key' ]; then
-c_c='/root/ygkkkca/cert.crt'
-d_d='/root/ygkkkca/private.key'
-else
-c_c='/etc/s-box/cert.pem'
-d_d='/etc/s-box/private.key'
-fi
-echo $sbfiles | xargs -n1 sed -i "102s#$c#$c_c#"
-echo $sbfiles | xargs -n1 sed -i "103s#$d#$d_d#"
-restartsb
-blue "Настройка завершена. Обновите конфиги в пункте 9."
-else
-red "Сертификат не найден. Используйте пункт 12 для выпуска." && sleep 2 && sb
-fi
-else
-sb
-fi
-}
-allports(){
-vl_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].listen_port')
-vm_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].listen_port')
-hy2_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].listen_port')
-tu5_port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].listen_port')
-hy2_ports=$(iptables -t nat -nL --line 2>/dev/null | grep -w "$hy2_port" | awk '{print $8}' | sed 's/dpts://; s/dpt://' | tr '\n' ',' | sed 's/,$//')
-tu5_ports=$(iptables -t nat -nL --line 2>/dev/null | grep -w "$tu5_port" | awk '{print $8}' | sed 's/dpts://; s/dpt://' | tr '\n' ',' | sed 's/,$//')
-[[ -n $hy2_ports ]] && hy2zfport="$hy2_ports" || hy2zfport="Нет"
-[[ -n $tu5_ports ]] && tu5zfport="$tu5_ports" || tu5zfport="Нет"
-}
-# Удаление портов Hysteria2
-hy2deports
-hy2port
-echo $sbfiles | xargs -n1 sed -i "67s/$hy2_port/$port_hy2/"
-restartsb
-result_vl_vm_hy_tu && reshy2 && sb_client
-else
-hy2port
-echo $sbfiles | xargs -n1 sed -i "67s/$hy2_port/$port_hy2/"
-restartsb
-result_vl_vm_hy_tu && reshy2 && sb_client
-fi
-elif [ "$menu" = "2" ]; then
-green "1. Добавить диапазон портов для Hysteria2"
-green "2. Добавить один порт для Hysteria2"
-green "0. Назад"
-readp "Пожалуйста, выберите [0-2]: " menu
-if [ "$menu" = "1" ]; then
-port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].listen_port')
-fports && result_vl_vm_hy_tu && sb_client && changeport
-elif [ "$menu" = "2" ]; then
-port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[2].listen_port')
-fport && result_vl_vm_hy_tu && sb_client && changeport
-else
-changeport
-fi
-elif [ "$menu" = "3" ]; then
-if [ -n $hy2_ports ]; then
-hy2deports && result_vl_vm_hy_tu && sb_client && changeport
-else
-yellow "Дополнительные порты для Hysteria2 не настроены" && changeport
-fi
-else
-changeport
-fi
-
-elif [ "$menu" = "4" ]; then
-green "1. Изменить основной порт Tuic5 (доп. порты будут сброшены)"
-green "2. Добавить дополнительные порты для Tuic5"
-green "3. Удалить дополнительные порты для Tuic5"
-green "0. Назад"
-readp "Пожалуйста, выберите [0-3]: " menu
-if [ "$menu" = "1" ]; then
-if [ -n $tu5_ports ]; then
-tu5deports
-tu5port
-echo $sbfiles | xargs -n1 sed -i "89s/$tu5_port/$port_tu/"
-restartsb
-result_vl_vm_hy_tu && restu5 && sb_client
-else
-tu5port
-echo $sbfiles | xargs -n1 sed -i "89s/$tu5_port/$port_tu/"
-restartsb
-result_vl_vm_hy_tu && restu5 && sb_client
-fi
-elif [ "$menu" = "2" ]; then
-green "1. Добавить диапазон портов для Tuic5"
-green "2. Добавить один порт для Tuic5"
-green "0. Назад"
-readp "Пожалуйста, выберите [0-2]: " menu
-if [ "$menu" = "1" ]; then
-port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].listen_port')
-fports && result_vl_vm_hy_tu && sb_client && changeport
-elif [ "$menu" = "2" ]; then
-port=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[3].listen_port')
-fport && result_vl_vm_hy_tu && sb_client && changeport
-else
-changeport
-fi
-elif [ "$menu" = "3" ]; then
-if [ -n $tu5_ports ]; then
-tu5deports && result_vl_vm_hy_tu && sb_client && changeport
-else
-yellow "Дополнительные порты для Tuic5 не настроены" && changeport
-fi
-else
-changeport
-fi
-else
-sb
-fi
-}
-
-changeuuid(){
-echo
-olduuid=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[0].users[0].uuid')
-oldvmpath=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].transport.path')
-green "Текущий UUID (пароль) для всех протоколов: $olduuid"
-green "Текущий путь Vmess: $oldvmpath"
-echo
-yellow "1. Изменить UUID (пароль) для всех протоколов"
-yellow "2. Изменить путь (path) для Vmess"
-yellow "0. Назад"
-readp "Пожалуйста, выберите [0-2]: " menu
-if [ "$menu" = "1" ]; then
-readp "Введите новый UUID (или нажмите Enter для генерации случайного): " menu
-if [ -z "$menu" ]; then
-uuid=$(/etc/s-box/sing-box generate uuid)
-else
-uuid=$menu
-fi
-echo $sbfiles | xargs -n1 sed -i "s/$olduuid/$uuid/g"
-restartsb
-blue "Новый UUID (пароль): ${uuid}" 
-blue "Текущий путь Vmess: $(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].transport.path')"
-elif [ "$menu" = "2" ]; then
-readp "Введите новый путь для Vmess (Enter, чтобы оставить без изменений): " menu
-if [ -z "$menu" ]; then
-echo
-else
-vmpath=$menu
-echo $sbfiles | xargs -n1 sed -i "50s#$oldvmpath#$vmpath#g"
-restartsb
-fi
-blue "Подтвержденный путь Vmess: $(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.inbounds[1].transport.path')"
-sbshare
-else
-changeserv
-fi
-}
-
-changeip(){
+ipchange(){
 v4v6
-chip(){
-rpip=$(sed 's://.*::g' /etc/s-box/sb.json | jq -r '.outbounds[0].domain_strategy')
-[[ "$sbnh" == "1.10" ]] && num=10 || num=11
-sed -i "111s/$rpip/$rrpip/g" /etc/s-box/sb10.json
-sed -i "134s/$rpip/$rrpip/g" /etc/s-box/sb11.json
-rm -rf /etc/s-box/sb.json
-cp /etc/s-box/sb${num}.json /etc/s-box/sb.json
-restartsb
-}
-readp "Выберите приоритет IP:\n1. IPv4 в приоритете\n2. IPv6 в приоритете\n3. Только IPv4\n4. Только IPv6\nВаш выбор: " choose
-if [[ $choose == "1" && -n $v4 ]]; then
-rrpip="prefer_ipv4" && chip && v4_6="Приоритет IPv4 ($v4)"
-elif [[ $choose == "2" && -n $v6 ]]; then
-rrpip="prefer_ipv6" && chip && v4_6="Приоритет IPv6 ($v6)"
-elif [[ $choose == "3" && -n $v4 ]]; then
-rrpip="ipv4_only" && chip && v4_6="Только IPv4 ($v4)"
-elif [[ $choose == "4" && -n $v6 ]]; then
-rrpip="ipv6_only" && chip && v4_6="Только IPv6 ($v6)"
-else 
-red "Ошибка: выбранный тип адреса отсутствует на сервере или неверный ввод" && changeip
-fi
-blue "Текущая настройка приоритета IP: ${v4_6}" && sb
-}
-
-tgsbshow(){
-echo
-yellow "1. Настроить/Сбросить Token и UserID Telegram-бота"
-yellow "0. Назад"
-readp "Пожалуйста, выберите [0-1]: " menu
-if [ "$menu" = "1" ]; then
-rm -rf /etc/s-box/sbtg.sh
-readp "Введите Token вашего Telegram-бота: " token
-telegram_token=$token
-readp "Введите ваш Telegram User ID: " userid
-telegram_id=$userid
-# Формирование скрипта отправки в TG...
-# (Код скрипта sbtg.sh остается техническим, перевожу только текст сообщений внутри)
-echo '#!/bin/bash
-# ... (технический код) ...
-URL="https://api.telegram.org/bottelegram_token/sendMessage"
-res=$(timeout 20s curl -s -X POST $URL -d chat_id=telegram_id -d parse_mode=${MODE} --data-urlencode "text=🚀【 Ссылка Vless-reality-vision 】: поддерживается Nekobox "$'"'"'\n\n'"'"'"${message_text_m1}")
-# ... (аналогично для остальных протоколов) ...
-' > /etc/s-box/sbtg.sh
-sed -i "s/telegram_token/$telegram_token/g" /etc/s-box/sbtg.sh
-sed -i "s/telegram_id/$telegram_id/g" /etc/s-box/sbtg.sh
-green "Настройка завершена! Убедитесь, что бот запущен."
-tgnotice
+if [ -z "$v4" ]; then
+vps_ipv4='Нет IPv4'
+vps_ipv6="$v6"
+location="$v6dq"
+elif [ -n "$v4" ] && [ -n "$v6" ]; then
+vps_ipv4="$v4"
+vps_ipv6="$v6"
+location="$v4dq"
 else
-changeserv
+vps_ipv4="$v4"
+vps_ipv6='Нет IPv6'
+location="$v4dq"
 fi
-}
-
-changeserv(){
-sbactive
-echo
-green "Меню изменения конфигурации Sing-box:"
-readp "1. Изменить домен Reality / Сертификаты / Настройки TLS\n2. Изменить UUID (пароль) / Путь Vmess\n3. Настройки Argo (временные и фиксированные туннели)\n4. Приоритет IPv4 / IPv6\n5. Настройка уведомлений в Telegram\n6. Смена аккаунта Warp-Wireguard\n7. Настройка подписок через Gitlab\n8. Настройка CDN-адресов для Vmess\n0. Назад\nВыберите пункт [0-8]: " menu
-if [ "$menu" = "1" ];then
-changeym
-elif [ "$menu" = "2" ];then
-changeuuid
-elif [ "$menu" = "3" ];then
-cfargo_ym
-elif [ "$menu" = "4" ];then
-changeip
-elif [ "$menu" = "5" ];then
-tgsbshow
-elif [ "$menu" = "6" ];then
-changewg
-elif [ "$menu" = "7" ];then
-gitlabsub
-elif [ "$menu" = "8" ];then
-vmesscfadd
-else 
-sb
+if echo "$v6" | grep -q '^2a09'; then
+w6="[WARP]"
 fi
-}
-
-vmesscfadd(){
+if echo "$v4" | grep -q '^104.28'; then
+w4="[WARP]"
+fi
 echo
-green "Рекомендуемые стабильные CDN-адреса:"
-blue "www.visa.com.sg"
-blue "www.wto.org"
-blue "www.web.com"
+argosbxstatus
 echo
-yellow "1. Настроить CDN-адрес для основного Vmess-ws(tls)"
-yellow "2. Сбросить Host/SNI для пункта 1"
-yellow "3. Настроить CDN-адрес для Vmess-Argo"
-yellow "0. Назад"
-readp "Выберите пункт [0-3]: " menu
-# ... (перевод логики настройки CDN) ...
-}
-
-gitlabsub(){
+echo "=========Текущая информация о локальных IP сервера========="
+echo "Локальный адрес IPv4: $vps_ipv4 $w4"
+echo "Локальный адрес IPv6: $vps_ipv6 $w6"
+echo "Регион сервера: $location"
 echo
-green "Убедитесь, что на Gitlab создан проект, включен Push и получен Access Token"
-yellow "1. Настроить/Сбросить подписку Gitlab"
-yellow "0. Назад"
-readp "Пожалуйста, выберите [0-1]: " menu
-# ... (логика Git) ...
-}
-
-clsbshow(){
-green "Конфигурация Sing-box обновлена и отправлена в репозиторий"
-green "Ссылка на подписку Sing-box:"
-blue "$(cat /etc/s-box/sing_box_gitlab.txt 2>/dev/null)"
-echo
-green "QR-код подписки Sing-box:"
-qrencode -o - -t ANSIUTF8 "$(cat /etc/s-box/sing_box_gitlab.txt 2>/dev/null)"
-echo
-echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-# ... (аналогично для Clash) ...
-}
-# ... (продолжение логики warpcode)
-blue "Private_key (закрытый ключ): $pvk"
-blue "IPv6-адрес: $v6"
-blue "Значение reserved: $res"
-}
-
-changewg(){
-[[ "$sbnh" == "1.10" ]] && num=10 || num=11
-# Извлечение текущих параметров Wireguard...
-# (Технический блок извлечения данных остается без изменений)
-echo
-green "Текущие параметры Warp-Wireguard:"
-green "Private_key (закрытый ключ): $wgprkey"
-green "IPv6-адрес: $wgipv6"
-green "Значение Reserved: $wgres"
-green "Endpoint (IP:Порт): $wgip:$wgpo"
-echo
-yellow "1. Сменить аккаунт Warp-Wireguard"
-yellow "0. Назад"
-readp "Пожалуйста, выберите [0-1]: " menu
-if [ "$menu" = "1" ]; then
-green "Генерация нового случайного аккаунта Warp..."
-warpwg
-echo
-readp "Введите свой Private_key: " menu
-# ... (логика замены в конфигах)
-restartsb
-green "Настройка завершена."
-elif [ "$menu" = "2" ]; then
-green "Пожалуйста, подождите... Выполняется поиск оптимального Endpoint..."
-# ... (логика скрипта endip.sh)
-green "Поиск завершен. Текущий Endpoint: $nwgip:$nwgpo"
+sleep 2
+if [ "$ippz" = "4" ]; then
+if [ -z "$v4" ]; then
+ipbest
 else
-changeserv
+server_ip="$v4"
+echo "$server_ip" > "$HOME/agsbx/server_ip.log"
 fi
-}
-
-sbymfl(){
-# Логика отображения статусов разделения трафика (Domain Routing)
-# Перевод статусов:
-warp_s4_ip='Socks5-IPv4 доступен'
-warp_s6_ip='Socks5-IPv6 тест'
-# ...
-wfl4="${yellow}【Warp IPv4】Трафик не разделен${plain}"
-wfl6="${yellow}【Warp IPv6】Трафик не разделен${plain}"
-# (и так далее для всех каналов)
-}
-
-changefl(){
-sbactive
-blue "Настройка единого разделения трафика по доменам"
-blue "Для обеспечения стабильности используется приоритетный режим стека IP"
-blue "Warp-Wireguard включен по умолчанию (опции 1 и 2)"
-blue "Socks5 требует установки официального клиента Warp (опции 3 и 4)"
-blue "Локальный выход VPS (опции 5 и 6)"
-echo
-[[ "$sbnh" == "1.10" ]] && blue "Ядро Sing-box поддерживает Geosite" || blue "Ядро не поддерживает Geosite (только домены)"
-echo
-yellow "Важно:"
-yellow "1. Для доменного режима вводите полный адрес (напр., www.google.com)"
-yellow "2. Для Geosite вводите имя правила (напр., netflix, openai, geolocation-!cn)"
-yellow "3. Не дублируйте одни и те же домены в разных правилах"
-changef
-}
-
-changef(){
-sbymfl
-echo
-green "1. Настроить разделение Warp-Wireguard IPv4: $wfl4"
-green "2. Настроить разделение Warp-Wireguard IPv6: $wfl6"
-green "3. Настроить разделение Warp-Socks5 IPv4: $sfl4"
-green "4. Настроить разделение Warp-Socks5 IPv6: $sfl6"
-green "5. Настроить разделение Локальный IPv4 VPS: $adfl4"
-green "6. Настроить разделение Локальный IPv6 VPS: $adfl6"
-green "0. Назад"
-readp "Выберите пункт [0-6]: " menu
-# ... (логика ввода доменов)
-}
-
-upsbcroe(){
-sbactive
-lapre
-[[ $inscore =~ ^[0-9.]+$ ]] && lat="【Установлена v$inscore】" || pre="【Установлена v$inscore】"
-green "1. Обновить/Перейти на последнюю STABLE версию v$latcore $lat"
-green "2. Обновить/Перейти на последнюю PRE-RELEASE версию v$precore $pre"
-green "3. Установить конкретную версию (указать номер)"
-green "0. Назад"
-# ... (логика загрузки ядра)
-}
-
-stclre(){
-readp "1. Перезапустить\n2. Остановить\nВыберите действие: " menu
-if [ "$menu" = "1" ]; then
-restartsb
-green "Служба Sing-box перезапущена"
-elif [ "$menu" = "2" ]; then
-# остановка...
-green "Служба Sing-box остановлена"
-fi
-}
-
-# --- ГЛАВНОЕ МЕНЮ ИНТЕРФЕЙСА ---
-clear
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
-# Логотип (ASCII) остается
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
-white " Проект в Github: github.com/yonggekkk"
-white " Авторский блог: ygkkk.blogspot.com"
-white "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
-white " Скрипт 4-в-1: Vless-Reality, Vmess-Argo, Hysteria-2, Tuic-v5"
-white " Команда запуска: sb"
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-green " 1. Быстрая установка Sing-box" 
-green " 2. Полное удаление Sing-box"
-white "----------------------------------------------------------------------------------"
-green " 3. Изменение конфигурации (TLS/UUID/Argo/IP/TG/Warp/CDN)" 
-green " 4. Управление портами (смена основного/настройка доп. портов)" 
-green " 5. Настройка разделения трафика по доменам (Routing)"
-green " 6. Остановить или Перезапустить Sing-box"   
-green " 7. Обновить скрипт Sing-box-yg"
-green " 8. Управление версией ядра Sing-box"
-white "----------------------------------------------------------------------------------"
-green " 9. Показать ссылки, QR-коды и конфиги (Clash/Sing-box/V2rayN)"
-green "10. Просмотр логов Sing-box"
-green "11. Установка BBR + FQ ускорения"
-green "12. Управление сертификатами Acme"
-green "13. Управление Warp (проверка разблокировки Netflix/ChatGPT)"
-green "14. Режим Warp-Socks5 (локальный или Psiphon VPN)"
-green "15. Обновить локальный IP / Сменить IPv4-IPv6 вывод"
-white "----------------------------------------------------------------------------------"
-green "16. Справочное руководство по скрипту"
-white "----------------------------------------------------------------------------------"
-green " 0. Выход"
-red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-
-# Логика проверки статуса и вывода информации о VPS...
-echo -e "Состояние VPS:"
-echo -e "ОС: $blue$op$plain  \c"; echo -e "Ядро: $blue$version$plain  \c"; echo -e "Процессор: $blue$cpu$plain"
-# ...
-if [[ -n $($status_cmd 2>/dev/null | grep -w "$status_pattern") ]]; then
-echo -e "Статус Sing-box: $blueЗапущен и работает$plain"
+elif [ "$ippz" = "6" ]; then
+if [ -z "$v6" ]; then
+ipbest
 else
-echo -e "Статус Sing-box: $redНе запущен или не установлен$plain"
+server_ip="[$v6]"
+echo "$server_ip" > "$HOME/agsbx/server_ip.log"
 fi
-# ...
-readp "Введите номер [0-16]: " Input
-case "$Input" in  
- 1 ) instsllsingbox;;
- 2 ) unins;;
- 3 ) changeserv;;
- 4 ) changeport;;
- 5 ) changefl;;
- 6 ) stclre;;
- 7 ) upsbyg;; 
- 8 ) upsbcroe;;
- 9 ) clash_sb_share;;
-10 ) sblog;;
-11 ) bbr;;
-12 ) acme;;
-13 ) cfwarp;;
-14 ) inssbwpph;;
-15 ) wgcfgo && sbshare;;
-16 ) sbsm;;
- * ) exit 
+else
+ipbest
+fi
+}
+ipchange
+rm -rf "$HOME/agsbx/jh.txt"
+uuid=$(cat "$HOME/agsbx/uuid")
+server_ip=$(cat "$HOME/agsbx/server_ip.log")
+sxname=$(cat "$HOME/agsbx/name" 2>/dev/null)
+xvvmcdnym=$(cat "$HOME/agsbx/cdnym" 2>/dev/null)
+echo "*********************************************************"
+echo "*********************************************************"
+echo "Вывод конфигурации узлов скрипта Argosbx:"
+echo
+case "$server_ip" in
+104.28*|\[2a09*) echo "Обнаружено использование IP-адреса WARP в качестве адреса клиента (IP начинается с 104.28 или 2a09). Пожалуйста, вручную замените IP WARP в адресе клиента на локальный IPv4 или IPv6 адрес вашего VPS" && sleep 3 ;;
 esac
+echo
+ym_vl_re=$(cat "$HOME/agsbx/ym_vl_re" 2>/dev/null)
+cfip() { echo $((RANDOM % 13 + 1)); }
+if [ -e "$HOME/agsbx/xray" ]; then
+private_key_x=$(cat "$HOME/agsbx/xrk/private_key" 2>/dev/null)
+public_key_x=$(cat "$HOME/agsbx/xrk/public_key" 2>/dev/null)
+short_id_x=$(cat "$HOME/agsbx/xrk/short_id" 2>/dev/null)
+enkey=$(cat "$HOME/agsbx/xrk/enkey" 2>/dev/null)
+fi
+if [ -e "$HOME/agsbx/sing-box" ]; then
+private_key_s=$(cat "$HOME/agsbx/sbk/private_key" 2>/dev/null)
+public_key_s=$(cat "$HOME/agsbx/sbk/public_key" 2>/dev/null)
+short_id_s=$(cat "$HOME/agsbx/sbk/short_id" 2>/dev/null)
+sskey=$(cat "$HOME/agsbx/sskey" 2>/dev/null)
+fi
+if grep xhttp-reality "$HOME/agsbx/xr.json" >/dev/null 2>&1; then
+echo "💣[ Vless-xhttp-reality-enc ] Поддерживает шифрование ENC, информация об узле:"
+port_xh=$(cat "$HOME/agsbx/port_xh")
+vl_xh_link="vless://$uuid@$server_ip:$port_xh?encryption=$enkey&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=xhttp&path=$uuid-xh&mode=auto#${sxname}vl-xhttp-reality-enc-$hostname"
+echo "$vl_xh_link" >> "$HOME/agsbx/jh.txt"
+echo "$vl_xh_link"
+echo
+fi
+if grep vless-xhttp "$HOME/agsbx/xr.json" >/dev/null 2>&1; then
+echo "💣[ Vless-xhttp-enc ] Поддерживает шифрование ENC, информация об узле:"
+port_vx=$(cat "$HOME/agsbx/port_vx")
+vl_vx_link="vless://$uuid@$server_ip:$port_vx?encryption=$enkey&flow=xtls-rprx-vision&type=xhttp&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-enc-$hostname"
+echo "$vl_vx_link" >> "$HOME/agsbx/jh.txt"
+echo "$vl_vx_link"
+echo
+if [ -f "$HOME/agsbx/cdnym" ]; then
+echo "💣[ Vless-xhttp-enc-cdn ] Поддерживает шифрование ENC, информация об узле:"
+echo "Примечание: адрес по умолчанию yg(цифра).ygkkk.dpdns.org можно заменить на ваш домен с лучшим IP. Если это порт Origin, необходимо вручную изменить его на порты серии 443 или 80"
+vl_vx_cdn_link="vless://$uuid@yg$(cfip).ygkkk.dpdns.org:$port_vx?encryption=$enkey&flow=xtls-rprx-vision&type=xhttp&host=$xvvmcdnym&path=$uuid-vx&mode=auto#${sxname}vl-xhttp-enc-cdn-$hostname"
+echo "$vl_vx_cdn_link" >> "$HOME/agsbx/jh.txt"
+echo "$vl_vx_cdn_link"
+echo
+fi
+fi
+if grep vless-ws "$HOME/agsbx/xr.json" >/dev/null 2>&1; then
+echo "💣[ Vless-ws-enc ] Поддерживает шифрование ENC, информация об узле:"
+port_vw=$(cat "$HOME/agsbx/port_vw")
+vl_vw_link="vless://$uuid@$server_ip:$port_vw?encryption=$enkey&flow=xtls-rprx-vision&type=ws&path=$uuid-vw#${sxname}vl-ws-enc-$hostname"
+echo "$vl_vw_link" >> "$HOME/agsbx/jh.txt"
+echo "$vl_vw_link"
+echo
+if [ -f "$HOME/agsbx/cdnym" ]; then
+echo "💣[ Vless-ws-enc-cdn ] Поддерживает шифрование ENC, информация об узле:"
+echo "Примечание: адрес по умолчанию yg(цифра).ygkkk.dpdns.org можно заменить на ваш домен с лучшим IP. Если это порт Origin, необходимо вручную изменить его на порты серии 443 или 80"
+vl_vw_cdn_link="vless://$uuid@yg$(cfip).ygkkk.dpdns.org:$port_vw?encryption=$enkey&flow=xtls-rprx-vision&type=ws&host=$xvvmcdnym&path=$uuid-vw#${sxname}vl-ws-enc-cdn-$hostname"
+echo "$vl_vw_cdn_link" >> "$HOME/agsbx/jh.txt"
+echo "$vl_vw_cdn_link"
+echo
+fi
+fi
+if grep reality-vision "$HOME/agsbx/xr.json" >/dev/null 2>&1; then
+echo "💣[ Vless-tcp-reality-vision ] Информация об узле:"
+port_vl_re=$(cat "$HOME/agsbx/port_vl_re")
+vl_link="vless://$uuid@$server_ip:$port_vl_re?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_x&sid=$short_id_x&type=tcp&headerType=none#${sxname}vl-reality-vision-$hostname"
+echo "$vl_link" >> "$HOME/agsbx/jh.txt"
+echo "$vl_link"
+echo
+fi
+if grep ss-2022 "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
+echo "💣[ Shadowsocks-2022 ] Информация об узле:"
+port_ss=$(cat "$HOME/agsbx/port_ss")
+ss_link="ss://$(echo -n "2022-blake3-aes-128-gcm:$sskey@$server_ip:$port_ss" | base64 -w0)#${sxname}Shadowsocks-2022-$hostname"
+echo "$ss_link" >> "$HOME/agsbx/jh.txt"
+echo "$ss_link"
+echo
+fi
+if grep vmess-xr "$HOME/agsbx/xr.json" >/dev/null 2>&1 || grep vmess-sb "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
+echo "💣[ Vmess-ws ] Информация об узле:"
+port_vm_ws=$(cat "$HOME/agsbx/port_vm_ws")
+vm_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vm-ws-$hostname\", \"add\": \"$server_ip\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"www.bing.com\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vm_link" >> "$HOME/agsbx/jh.txt"
+echo "$vm_link"
+echo
+if [ -f "$HOME/agsbx/cdnym" ]; then
+echo "💣[ Vmess-ws-cdn ] Информация об узле:"
+echo "Примечание: адрес по умолчанию yg(цифра).ygkkk.dpdns.org можно заменить на ваш домен с лучшим IP. Если это порт Origin, необходимо вручную изменить его на порты серии 443 или 80"
+vm_cdn_link="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vm-ws-cdn-$hostname\", \"add\": \"yg$(cfip).ygkkk.dpdns.org\", \"port\": \"$port_vm_ws\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$xvvmcdnym\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vm_cdn_link" >> "$HOME/agsbx/jh.txt"
+echo "$vm_cdn_link"
+echo
+fi
+fi
+if grep anytls-sb "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
+echo "💣[ AnyTLS ] Информация об узле:"
+port_an=$(cat "$HOME/agsbx/port_an")
+an_link="anytls://$uuid@$server_ip:$port_an?insecure=1&allowInsecure=1#${sxname}anytls-$hostname"
+echo "$an_link" >> "$HOME/agsbx/jh.txt"
+echo "$an_link"
+echo
+fi
+if grep anyreality-sb "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
+echo "💣[ Any-Reality ] Информация об узле:"
+port_ar=$(cat "$HOME/agsbx/port_ar")
+ar_link="anytls://$uuid@$server_ip:$port_ar?security=reality&sni=$ym_vl_re&fp=chrome&pbk=$public_key_s&sid=$short_id_s&type=tcp&headerType=none#${sxname}any-reality-$hostname"
+echo "$ar_link" >> "$HOME/agsbx/jh.txt"
+echo "$ar_link"
+echo
+fi
+if grep hy2-sb "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
+echo "💣[ Hysteria2 ] Информация об узле:"
+port_hy2=$(cat "$HOME/agsbx/port_hy2")
+hy2_link="hysteria2://$uuid@$server_ip:$port_hy2?security=tls&alpn=h3&insecure=1&sni=www.bing.com#${sxname}hy2-$hostname"
+echo "$hy2_link" >> "$HOME/agsbx/jh.txt"
+echo "$hy2_link"
+echo
+fi
+if grep tuic5-sb "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
+echo "💣[ Tuic ] Информация об узле:"
+port_tu=$(cat "$HOME/agsbx/port_tu")
+tuic5_link="tuic://$uuid:$uuid@$server_ip:$port_tu?congestion_control=bbr&udp_relay_mode=native&alpn=h3&sni=www.bing.com&allow_insecure=1&allowInsecure=1#${sxname}tuic-$hostname"
+echo "$tuic5_link" >> "$HOME/agsbx/jh.txt"
+echo "$tuic5_link"
+echo
+fi
+if grep socks5-xr "$HOME/agsbx/xr.json" >/dev/null 2>&1 || grep socks5-sb "$HOME/agsbx/sb.json" >/dev/null 2>&1; then
+echo "💣[ Socks5 ] Информация клиента:"
+port_so=$(cat "$HOME/agsbx/port_so")
+echo "Пожалуйста, используйте вместе со встроенным прокси других приложений, не используйте как прямой узел"
+echo "Адрес клиента: $server_ip"
+echo "Порт клиента: $port_so"
+echo "Имя пользователя клиента: $uuid"
+echo "Пароль клиента: $uuid"
+echo
+fi
+argodomain=$(cat "$HOME/agsbx/sbargoym.log" 2>/dev/null)
+[ -z "$argodomain" ] && argodomain=$(grep -a trycloudflare.com "$HOME/agsbx/argo.log" 2>/dev/null | awk 'NR==2{print}' | awk -F// '{print $2}' | awk '{print $1}')
+if [ -n "$argodomain" ]; then
+vlvm=$(cat $HOME/agsbx/vlvm 2>/dev/null)
+if [ "$vlvm" = "Vmess" ]; then
+vmatls_link1="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-tls-argo-$hostname-443\", \"add\": \"yg1.ygkkk.dpdns.org\", \"port\": \"443\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"chrome\"}" | base64 -w0)"
+echo "$vmatls_link1" >> "$HOME/agsbx/jh.txt"
+vmatls_link2="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-tls-argo-$hostname-8443\", \"add\": \"yg2.ygkkk.dpdns.org\", \"port\": \"8443\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"chrome\"}" | base64 -w0)"
+echo "$vmatls_link2" >> "$HOME/agsbx/jh.txt"
+vmatls_link3="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-tls-argo-$hostname-2053\", \"add\": \"yg3.ygkkk.dpdns.org\", \"port\": \"2053\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"chrome\"}" | base64 -w0)"
+echo "$vmatls_link3" >> "$HOME/agsbx/jh.txt"
+vmatls_link4="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-tls-argo-$hostname-2083\", \"add\": \"yg4.ygkkk.dpdns.org\", \"port\": \"2083\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"chrome\"}" | base64 -w0)"
+echo "$vmatls_link4" >> "$HOME/agsbx/jh.txt"
+vmatls_link5="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-tls-argo-$hostname-2087\", \"add\": \"yg5.ygkkk.dpdns.org\", \"port\": \"2087\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"chrome\"}" | base64 -w0)"
+echo "$vmatls_link5" >> "$HOME/agsbx/jh.txt"
+vmatls_link6="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-tls-argo-$hostname-2096\", \"add\": \"[2606:4700::0]\", \"port\": \"2096\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"tls\", \"sni\": \"$argodomain\", \"alpn\": \"\", \"fp\": \"chrome\"}" | base64 -w0)"
+echo "$vmatls_link6" >> "$HOME/agsbx/jh.txt"
+vma_link7="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-argo-$hostname-80\", \"add\": \"yg6.ygkkk.dpdns.org\", \"port\": \"80\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vma_link7" >> "$HOME/agsbx/jh.txt"
+vma_link8="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-argo-$hostname-8080\", \"add\": \"yg7.ygkkk.dpdns.org\", \"port\": \"8080\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vma_link8" >> "$HOME/agsbx/jh.txt"
+vma_link9="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-argo-$hostname-8880\", \"add\": \"yg8.ygkkk.dpdns.org\", \"port\": \"8880\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vma_link9" >> "$HOME/agsbx/jh.txt"
+vma_link10="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-argo-$hostname-2052\", \"add\": \"yg9.ygkkk.dpdns.org\", \"port\": \"2052\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vma_link10" >> "$HOME/agsbx/jh.txt"
+vma_link11="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-argo-$hostname-2082\", \"add\": \"yg10.ygkkk.dpdns.org\", \"port\": \"2082\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vma_link11" >> "$HOME/agsbx/jh.txt"
+vma_link12="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-argo-$hostname-2086\", \"add\": \"yg11.ygkkk.dpdns.org\", \"port\": \"2086\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vma_link12" >> "$HOME/agsbx/jh.txt"
+vma_link13="vmess://$(echo "{ \"v\": \"2\", \"ps\": \"${sxname}vmess-ws-argo-$hostname-2095\", \"add\": \"[2400:cb00:2049::0]\", \"port\": \"2095\", \"id\": \"$uuid\", \"aid\": \"0\", \"scy\": \"auto\", \"net\": \"ws\", \"type\": \"none\", \"host\": \"$argodomain\", \"path\": \"/$uuid-vm\", \"tls\": \"\"}" | base64 -w0)"
+echo "$vma_link13" >> "$HOME/agsbx/jh.txt"
+elif [ "$vlvm" = "Vless" ]; then
+vwatls_link1="vless://$uuid@yg$(cfip).ygkkk.dpdns.org:443?encryption=$enkey&flow=xtls-rprx-vision&type=ws&host=$argodomain&path=$uuid-vw&security=tls&sni=$argodomain&fp=chrome&insecure=0&allowInsecure=0#${sxname}vless-ws-tls-argo-enc-vision-$hostname"
+echo "$vwatls_link1" >> "$HOME/agsbx/jh.txt"
+vwa_link2="vless://$uuid@yg$(cfip).ygkkk.dpdns.org:80?encryption=$enkey&flow=xtls-rprx-vision&type=ws&host=$argodomain&path=$uuid-vw&security=none#${sxname}vless-ws-argo-enc-vision-$hostname"
+echo "$vwa_link2" >> "$HOME/agsbx/jh.txt"
+fi
+sbtk=$(cat "$HOME/agsbx/sbargotoken.log" 2>/dev/null)
+if [ -n "$sbtk" ]; then
+nametn="Токен постоянного туннеля Argo: $sbtk"
+fi
+argoshow=$(
+echo "Порт туннеля Argo использует основной порт протокола $vlvm-ws: $(cat $HOME/agsbx/argoport.log 2>/dev/null)
+Домен Argo: $argodomain
+$nametn
+
+1. 💣 Узел $vlvm-ws-tls-argo на порту 443 (лучший IP и порты серии 443 можно менять как угодно)
+${vmatls_link1}${vwatls_link1}
+
+2. 💣 Узел $vlvm-ws-argo на порту 80 (лучший IP и порты серии 80 можно менять как угодно)
+${vma_link7}${vwa_link2}
+"
+)
+fi
+echo "---------------------------------------------------------"
+echo "$argoshow"
+echo
+echo "---------------------------------------------------------"
+echo "Сводную информацию об узлах можно посмотреть в файле $HOME/agsbx/jh.txt или выполнив команду cat $HOME/agsbx/jh.txt"
+echo "========================================================="
+echo "Доступные ярлыки (после первой успешной установки необходимо переподключиться по SSH, чтобы ярлыки agsbx заработали):"
+showmode
+}
+cleandel(){
+for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsbx/c|/agsbx/s|/agsbx/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null; fi; fi; done
+kill -15 $(pgrep -f 'agsbx/s' 2>/dev/null) $(pgrep -f 'agsbx/c' 2>/dev/null) $(pgrep -f 'agsbx/x' 2>/dev/null) >/dev/null 2>&1
+sed -i '/agsbx/d' ~/.bashrc
+sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' ~/.bashrc
+. ~/.bashrc 2>/dev/null
+crontab -l > /tmp/crontab.tmp 2>/dev/null
+sed -i '/agsbx\/sing-box/d' /tmp/crontab.tmp
+sed -i '/agsbx\/xray/d' /tmp/crontab.tmp
+sed -i '/agsbx\/cloudflared/d' /tmp/crontab.tmp
+crontab /tmp/crontab.tmp >/dev/null 2>&1
+rm /tmp/crontab.tmp
+rm -rf  "$HOME/bin/agsbx"
+if pidof systemd >/dev/null 2>&1; then
+for svc in xr sb argo; do
+systemctl stop "$svc" >/dev/null 2>&1
+systemctl disable "$svc" >/dev/null 2>&1
+done
+rm -rf /etc/systemd/system/{xr.service,sb.service,argo.service}
+elif command -v rc-service >/dev/null 2>&1; then
+for svc in sing-box xray argo; do
+rc-service "$svc" stop >/dev/null 2>&1
+rc-update del "$svc" default >/dev/null 2>&1
+done
+rm -rf /etc/init.d/{sing-box,xray,argo}
+fi
+}
+xrestart(){
+kill -15 $(pgrep -f 'agsbx/x' 2>/dev/null) >/dev/null 2>&1
+if pidof systemd >/dev/null 2>&1; then
+systemctl restart xr >/dev/null 2>&1
+elif command -v rc-service >/dev/null 2>&1; then
+rc-service xray restart >/dev/null 2>&1
+else
+nohup $HOME/agsbx/xray run -c $HOME/agsbx/xr.json >/dev/null 2>&1 &
+fi
+}
+sbrestart(){
+kill -15 $(pgrep -f 'agsbx/s' 2>/dev/null) >/dev/null 2>&1
+if pidof systemd >/dev/null 2>&1; then
+systemctl restart sb >/dev/null 2>&1
+elif command -v rc-service >/dev/null 2>&1; then
+rc-service sing-box restart >/dev/null 2>&1
+else
+nohup $HOME/agsbx/sing-box run -c $HOME/agsbx/sb.json >/dev/null 2>&1 &
+fi
+}
+
+if [ "$1" = "del" ]; then
+cleandel
+rm -rf "$HOME/agsbx" "$HOME/agsb"
+echo "Удаление завершено"
+echo "Будем рады снова видеть вас среди пользователей мощного скрипта Argosbx от Yongge (ygkkk) 💣" && sleep 2
+echo
+showmode
+exit
+elif [ "$1" = "rep" ]; then
+cleandel
+rm -rf "$HOME/agsbx"/{sb.json,xr.json,sbargoym.log,sbargotoken.log,argo.log,argoport.log,cdnym,name}
+echo "Сброс протоколов Argosbx завершен, начинается обновление переменных..." && sleep 2
+echo
+elif [ "$1" = "list" ]; then
+cip
+exit
+elif [ "$1" = "upx" ]; then
+for P in /proc/[0-9]*; do [ -L "$P/exe" ] || continue; TARGET=$(readlink -f "$P/exe" 2>/dev/null) || continue; case "$TARGET" in *"/agsbx/x"*) kill "$(basename "$P")" 2>/dev/null ;; esac; done
+kill -15 $(pgrep -f 'agsbx/x' 2>/dev/null) >/dev/null 2>&1
+upxray && xrestart && echo "Обновление ядра Xray завершено" && sleep 2 && cip
+exit
+elif [ "$1" = "ups" ]; then
+for P in /proc/[0-9]*; do [ -L "$P/exe" ] || continue; TARGET=$(readlink -f "$P/exe" 2>/dev/null) || continue; case "$TARGET" in *"/agsbx/s"*) kill "$(basename "$P")" 2>/dev/null ;; esac; done
+kill -15 $(pgrep -f 'agsbx/s' 2>/dev/null) >/dev/null 2>&1
+upsingbox && sbrestart && echo "Обновление ядра Sing-box завершено" && sleep 2 && cip
+exit
+elif [ "$1" = "res" ]; then
+for P in /proc/[0-9]*; do
+[ -L "$P/exe" ] || continue
+TARGET=$(readlink -f "$P/exe" 2>/dev/null) || continue
+case "$TARGET" in
+*"/agsbx/s"*)
+kill "$(basename "$P")" 2>/dev/null
+sbrestart
+;;
+*"/agsbx/x"*)
+kill "$(basename "$P")" 2>/dev/null
+xrestart
+;;
+*"/agsbx/c"*)
+kill "$(basename "$P")" 2>/dev/null
+kill -15 $(pgrep -f 'agsbx/c' 2>/dev/null) >/dev/null 2>&1
+if pidof systemd >/dev/null 2>&1; then
+systemctl restart argo >/dev/null 2>&1
+elif command -v rc-service >/dev/null 2>&1; then
+rc-service argo restart >/dev/null 2>&1
+else
+if [ -e "$HOME/agsbx/sbargotoken.log" ]; then
+if ! pidof systemd >/dev/null 2>&1 && ! command -v rc-service >/dev/null 2>&1; then
+nohup $HOME/agsbx/cloudflared tunnel --no-autoupdate --edge-ip-version auto --protocol http2 run --token $(cat $HOME/agsbx/sbargotoken.log 2>/dev/null) >/dev/null 2>&1 &
+fi
+else
+nohup $HOME/agsbx/cloudflared tunnel --url http://localhost:$(cat $HOME/agsbx/argoport.log 2>/dev/null) --edge-ip-version auto --no-autoupdate --protocol http2 > $HOME/agsbx/argo.log 2>&1 &
+fi
+fi
+;;
+esac
+done
+sleep 5 && echo "Перезагрузка завершена" && sleep 3 && cip
+exit
+fi
+if ! find /proc/*/exe -type l 2>/dev/null | grep -E '/proc/[0-9]+/exe' | xargs -r readlink 2>/dev/null | grep -Eq 'agsbx/(s|x)' && ! pgrep -f 'agsbx/(s|x)' >/dev/null 2>&1; then
+for P in /proc/[0-9]*; do if [ -L "$P/exe" ]; then TARGET=$(readlink -f "$P/exe" 2>/dev/null); if echo "$TARGET" | grep -qE '/agsbx/c|/agsbx/s|/agsbx/x'; then PID=$(basename "$P"); kill "$PID" 2>/dev/null && echo "Killed $PID ($TARGET)" || echo "Could not kill $PID ($TARGET)"; fi; fi; done
+kill -15 $(pgrep -f 'agsbx/s' 2>/dev/null) $(pgrep -f 'agsbx/c' 2>/dev/null) $(pgrep -f 'agsbx/x' 2>/dev/null) >/dev/null 2>&1
+if [ -z "$( (command -v curl >/dev/null 2>&1 && curl -s4m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -4 -qO- --tries=2 "$v46url" 2>/dev/null) )" ]; then
+echo -e "nameserver 2a00:1098:2b::1\nnameserver 2a00:1098:2c::1" > /etc/resolv.conf
+fi
+if [ -n "$( (command -v curl >/dev/null 2>&1 && curl -s6m5 -k "$v46url" 2>/dev/null) || (command -v wget >/dev/null 2>&1 && timeout 3 wget -6 -qO- --tries=2 "$v46url" 2>/dev/null) )" ]; then
+sendip="2606:4700:d0::a29f:c001"
+xendip="[2606:4700:d0::a29f:c001]"
+else
+sendip="162.159.192.1"
+xendip="162.159.192.1"
+fi
+echo "Система VPS: $op"
+echo "Архитектура ЦП: $cpu"
+echo "Скрипт Argosbx не установлен, начало установки..." && sleep 1
+if [ -n "$oap" ]; then
+setenforce 0 >/dev/null 2>&1
+iptables -P INPUT ACCEPT >/dev/null 2>&1
+iptables -P FORWARD ACCEPT >/dev/null 2>&1
+iptables -P OUTPUT ACCEPT >/dev/null 2>&1
+iptables -F >/dev/null 2>&1
+netfilter-persistent save >/dev/null 2>&1
+echo
+echo "iptables: открытие всех портов выполнено"
+fi
+ins
+cip
+echo
+else
+echo "Скрипт Argosbx уже установлен"
+echo
+argosbxstatus
+echo
+echo "Доступные ярлыки:"
+showmode
+exit
+fi
