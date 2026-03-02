@@ -41,10 +41,10 @@ export warp=${warp:-''}
 export name=${name:-''}
 export oap=${oap:-''}
 v46url="https://icanhazip.com"
-agsbxurl="https://raw.githubusercontent.com/vasyakin/ArgoSB/refs/heads/main/SB.sh"
+agsbxurl="https://raw.githubusercontent.com/MyNicknme/ArgoSB/refs/heads/main/SB.sh"
 showmode(){
 echo "Онлайн-генератор SSH-команд для скрипта Argosbx: https://yonggekkk.github.io/argosbx/"
-echo "Основной скрипт: bash <(curl -Ls https://raw.githubusercontent.com/vasyakin/ArgoSB/refs/heads/main/SB.sh) или bash <(wget -qO- https://raw.githubusercontent.com/vasyakin/ArgoSB/refs/heads/main/SB.sh)"
+echo "Основной скрипт: bash <(curl -Ls https://raw.githubusercontent.com/MyNicknme/ArgoSB/refs/heads/main/SB.sh) или bash <(wget -qO- https://raw.githubusercontent.com/MyNicknme/ArgoSB/refs/heads/main/SB.sh)"
 echo "Команда отображения информации об узлах: agsbx list [или] основной скрипт list"
 echo "Команда сброса групп переменных: пользовательские группы переменных протоколов agsbx rep [или] пользовательские группы переменных протоколов основной скрипт rep"
 echo "Команда обновления скрипта: ранее установленные пользовательские группы переменных протоколов основной скрипт rep"
